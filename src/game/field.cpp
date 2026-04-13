@@ -88,7 +88,6 @@ void  CFiled::Draw()
 	MV1DrawModel(m_fieldhndl);
 	MV1DrawModel(m_Skyhndl);
 
-
 	switch (m_tagstage)
 	{
 	case CFiled::STAGE1:

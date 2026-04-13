@@ -12,6 +12,7 @@ private:
 	};
 
 	tagSTAGE m_tagstage;            //ステージ状態
+
 	int m_fieldhndl;                //フィールドハンドル
 	int m_Skyhndl;					//スカイハンドル
 	VECTOR m_SkyScale;				//スカイスケール
