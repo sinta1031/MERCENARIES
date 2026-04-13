@@ -126,7 +126,7 @@ void  CFiled::Exit()
 	if (m_Skyhndl != -1)
 	{
 		MV1DeleteModel(m_Skyhndl);
-		m_fieldhndl = -1;
+		m_Skyhndl = -1;
 	}
 }
 

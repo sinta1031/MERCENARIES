@@ -5,9 +5,7 @@
 #include <math.h>
 
 #define GRAVITY				( 0.1f )	//重力
-#define OILGRAVITY			( -0.05f )	//オイルに入った時の重力
 #define JUMPPOWER           ( 3.0f )	//ジャンプパワー
-#define OILJUMPPOWER		( 1.5f )	//足を取られている時のジャンプパワー
 
 static const VECTOR ZERO = { 0.0f,0.0f,0.0f };
 static const VECTOR INITPOS = { 0.0f,30.0f,0.0f };
@@ -40,12 +38,7 @@ void CPlayer::Init()
 	m_eState = PLAYER_STATE_NORMAL;
 	m_radius = 8.0f;
 	m_isActive = true;
-	m_GoalActive = false;
 	m_Hndl = -1;
-	m_KeyHndl = -1;
-	m_KeyhaveCount = 0;
-
-	c_canter.Init();
 }
 
 //ロード
@@ -55,28 +48,12 @@ void  CPlayer::Load()
 	{
 		m_Hndl = MV1LoadModel(PLAYER_MODEL_PATH);
 	}
-
-	if (m_KeyHndl == -1)
-	{
-		m_KeyHndl = LoadGraph(KEY_PATH);
-	}
-
-	c_canter.Load();
 }
 
 //描画
 void  CPlayer::Draw()
 {
 	MV1DrawModel(m_Hndl);
-
-	for (int i = 0; i < m_KeyhaveCount; i++)
-	{
-		//第1引数：X座標、2：Y座標、3：拡大縮小率、4：回転速度(ラジアン角)
-		//5：画像ハンドル、6：透過処理を有効にするか
-		DrawRotaGraph(m_PosX + (25 * i), m_PosY, 0.2, 0.0, m_KeyHndl, TRUE);
-	}
-
-	c_canter.Draw();
 
 	//DrawFormatString(20, 20, GetColor(255, 0, 0), "プレイヤーX:%.4f", m_vPos.x);
 	//DrawFormatString(20, 50, GetColor(255, 0, 0), "プレイヤーY:%.4f", m_vPos.y);
@@ -97,13 +74,6 @@ void  CPlayer::Exit()
 		m_Hndl = -1;
 	}
 
-	if (m_KeyHndl != -1)
-	{
-		DeleteGraph(m_KeyHndl);
-		m_KeyHndl = -1;
-	}
-
-	c_canter.Exit();
 }
 
 // プレイヤーの座標計算
@@ -182,29 +152,13 @@ void CPlayer::jump()
 {
 	if (m_gravity == 0.0f)
 	{
-		if (m_eState != PLAYER_STATE_OIL)
-		{
-			m_gravity = JUMPPOWER;
-		}
-		else if (m_eState == PLAYER_STATE_OIL)
-		{
-			m_gravity = OILJUMPPOWER;
-		}
+		m_gravity = JUMPPOWER;
 	}	
 }
 
 //重力
 void CPlayer::gravity()
 {
-	if (m_eState != PLAYER_STATE_OIL)
-	{
-		m_gravity -= GRAVITY;
-	}
-	else if (m_eState == PLAYER_STATE_OIL)
-	{
-		m_gravity = OILGRAVITY;
-	}
-
 	// 重力値更新 
 	m_vPos.y += m_gravity;
 }
@@ -216,9 +170,6 @@ void  CPlayer::Update()
 	MV1SetPosition(m_Hndl, m_vPos);
 	MV1SetRotationXYZ(m_Hndl, m_vRot);
 	MV1SetScale(m_Hndl, VGet(1.0f, 1.0f, 1.0f));
-
-	c_canter.Step(m_Hndl);
-	c_canter.Update();
 }
 
 // 位置情報取得
@@ -231,21 +182,6 @@ VECTOR  CPlayer::GetPos()
 float  CPlayer::GetRot()
 {
 	return m_vRot.y;
-}
-
-//鍵に触れた時の処理
-void CPlayer::KeyHitCalc()
-{
-	m_KeyhaveCount += 1;
-}
-
-//ゴールの扉に触れた時の処理
-void CPlayer::GoalHitCalc()
-{
-	if (m_KeyhaveCount >= 1)
-	{
-		m_GoalActive = true;
-	}
 }
 
 //落下判定

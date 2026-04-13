@@ -5,7 +5,6 @@
 #include "playerManager.h"
 #include "filed.h"
 #include "player.h"
-#include "Another.h"
 #include "ShotManager.h"
 #include "EnemyManager.h"
 #include "CollisionManager.h"

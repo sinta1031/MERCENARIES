@@ -57,13 +57,7 @@
     <ClCompile Include="src\lib\input.cpp">
       <Filter>ソース ファイル\lib</Filter>
     </ClCompile>
-    <ClCompile Include="src\game\Another.cpp">
-      <Filter>ソース ファイル\src\player</Filter>
-    </ClCompile>
     <ClCompile Include="src\game\CameraManager.cpp">
-      <Filter>ソース ファイル\src\camera</Filter>
-    </ClCompile>
-    <ClCompile Include="src\game\AnotherCamera.cpp">
       <Filter>ソース ファイル\src\camera</Filter>
     </ClCompile>
     <ClCompile Include="src\game\CollisionManager.cpp">
@@ -127,12 +121,6 @@
     </ClInclude>
     <ClInclude Include="src\lib\input.h">
       <Filter>ソース ファイル\lib</Filter>
-    </ClInclude>
-    <ClInclude Include="src\game\Another.h">
-      <Filter>ソース ファイル\src\player</Filter>
-    </ClInclude>
-    <ClInclude Include="src\game\AnotherCamera.h">
-      <Filter>ソース ファイル\src\camera</Filter>
     </ClInclude>
     <ClInclude Include="src\game\CameraManager.h">
       <Filter>ソース ファイル\src\camera</Filter>

@@ -2,7 +2,6 @@
 #include <DxLib.h>
 #include "ShotManager.h"
 #include "PlayCamera.h"
-#include "canter.h"
 
 class CPlayer {
 public:
@@ -11,7 +10,6 @@ public:
 	enum tagPlayerState {
 		PLAYER_STATE_NORMAL,    // 待機・歩き中
 		PLAYER_STATE_JUMP,      // ジャンプ中
-		PLAYER_STATE_OIL,		// オイルに触れている状態
 
 		PLAYER_STATE_NUM,
 	};
@@ -26,13 +24,8 @@ private:
 		int m_PosY;                  // 画面の座標Y
 		float m_radius;              // 物体の半径取得
 		int m_Hndl;                  // モデルハンドル
-		int m_KeyHndl;               // 鍵のハンドル
-		int m_KeyhaveCount;          // 鍵を持ってる数
 		bool m_isActive;             // 生存フラグ
-		bool m_GoalActive;           // ゴールフラグ
 		VECTOR m_CameraRot;          // カメラの回転率を代入する
-
-		Ccanter c_canter;	//カンテラ
 
 public:
 	// コンストラクタ・デストラクタ
@@ -75,13 +68,6 @@ public:
 	//ヒット後の処理
 	void HitCalc();
 
-	//鍵に触れた時の処理
-	void KeyHitCalc();
-
-	//ゴールの扉に触れた時の処理
-	void GoalHitCalc();
-	bool GoalIsActive() { return m_GoalActive; }
-
 	// 当たり判定の座標用
 	VECTOR GetCenter();
 
@@ -91,9 +77,6 @@ public:
 	//生存情報取得
 	bool IsActive() { return m_isActive; }
 	void SetActive(bool active) { m_isActive = active; }
-
-	//プレイヤーのタイプ切り替え
-	void ChangePlayerstatus(tagPlayerState id) { m_eState = id; }
 
 	//カメラの回転率代入
 	void SetCameraRot(VECTOR camerarot) { m_CameraRot = camerarot; }

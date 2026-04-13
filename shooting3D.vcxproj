@@ -133,8 +133,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\game\Another.cpp" />
-    <ClCompile Include="src\game\AnotherCamera.cpp" />
     <ClCompile Include="src\game\CameraManager.cpp" />
     <ClCompile Include="src\game\CollisionManager.cpp" />
     <ClCompile Include="src\game\Debugcamera.cpp" />
@@ -159,8 +157,6 @@
     <ClCompile Include="src\lib\InputPad.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\game\Another.h" />
-    <ClInclude Include="src\game\AnotherCamera.h" />
     <ClInclude Include="src\game\CameraManager.h" />
     <ClInclude Include="src\game\CollisionManager.h" />
     <ClInclude Include="src\game\Debugcamera.h" />
