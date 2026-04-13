@@ -4,7 +4,7 @@ static const char SKY_MODEL_PATH[] =
 "data/field/field/Sky/sky.mv1";
 
 static const char FILED_MODEL_PATH[] =
-"data/field/field/tutorialstage/stage.x";
+"data/field/field/stage1/stage1.x";
 
   
 // コンストラクタ・デストラクタ
@@ -21,6 +21,8 @@ CFiled::~CFiled()
 //背景の初期化
 void CFiled::Init()
 {
+	m_tagstage = STAGE1;
+
 	//ステージ
 	m_fieldhndl = -1;
 	m_isHitFlag = false;

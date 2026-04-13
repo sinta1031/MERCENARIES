@@ -160,6 +160,7 @@ void CPlayer::jump()
 void CPlayer::gravity()
 {
 	// 重力値更新 
+	m_gravity -= GRAVITY;
 	m_vPos.y += m_gravity;
 }
 
