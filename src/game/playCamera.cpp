@@ -35,10 +35,10 @@ void CPlayCamera::Step(VECTOR focus, float rotY)
 	//改良カメラ
 	//===============================================================================
 	//各種定義関連
-	const float MAX_LEN_NEAR = 50.0f;   // この距離より離れるとカメラ移動開始
-	const float MAX_LEN_FAR = 100.0f;    // これ以上離れさせない
-	const float MIN_LEN_NEAR = 40.0f;   // この距離より近づくとカメラ移動開始
-	const float MIN_LEN_FAR = 30.0f;    // これ以上は近づけさせない
+	const float MAX_LEN_NEAR = 30.0f;   // この距離より離れるとカメラ移動開始
+	const float MAX_LEN_FAR = 30.0f;    // これ以上離れさせない
+	const float MIN_LEN_NEAR = 20.0f;   // この距離より近づくとカメラ移動開始
+	const float MIN_LEN_FAR = 10.0f;    // これ以上は近づけさせない
 	const float CAM_MOVE_SPEED = 0.5f;  // カメラの移動速度
 
 	//カメラの回転処理(今回は簡易版)================================
@@ -140,7 +140,7 @@ void CPlayCamera::Step(VECTOR focus, float rotY)
 
 	//注視点はプレイヤーの上半身の位置当たりに
 	m_targetPos = focus;
-	m_targetPos.y += 15.0;
+	m_targetPos.y += 1.0;
 
 	//視点は見下ろし型になるように、少し下に
 	m_cameraPos.y = m_targetPos.y + 25.0f;

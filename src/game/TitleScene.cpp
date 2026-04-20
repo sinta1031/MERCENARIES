@@ -28,7 +28,7 @@ int CTitleScene::Loop()
 	case CTitleScene::TITLE_SCENE_LOAD:
 		Load();
 		// タイトルのBGMを鳴らす
-		/*c_SDM.TITLE(c_SDM.BGM_GAME, DX_TITLETYPE_LOOP);*/
+		//c_SDM.TITLE(c_SDM.BGM_GAME, DX_TITLETYPE_LOOP);
 		m_SceneID = TITLE_SCENE_LOOP;
 		break;
 
@@ -38,7 +38,6 @@ int CTitleScene::Loop()
 
 	case CTitleScene::TITLE_SCENE_END:
 		Exit();
-		//c_SDM.AllStop();
 		m_SceneID = TITLE_SCENE_INIT;
 		iRet = 1;
 		break;
@@ -51,26 +50,44 @@ int CTitleScene::Loop()
 //更新処理
 void CTitleScene::Draw()
 {
-	DrawFormatString(640, 360, GetColor(255, 255, 255), "TITLE");
+
 }
 
 //初期化
 void CTitleScene::Init()
 {
-	
+	// 中身を空にする
+	m_hndl.clear();
 }
 
 //終了処理
 void CTitleScene::Exit()
 {
-
+	for (int i = 0; i < m_hndl.size(); i++)
+	{
+		if (m_hndl[i] != -1)
+		{
+			DeleteGraph(m_hndl[i]);
+			m_hndl[i] = -1;
+		}
+	}
 }
 	
 
 //データロード
 void CTitleScene::Load()
 {
-	
+	const char* filePath[TITLE_PICTURE_NUM] = {
+		"data/background/Title/TITLE",
+		"data/ui/Title/TITLE_UI",
+
+	};
+
+	for (int i = 0; i < TITLE_PICTURE_NUM; i++)
+	{
+		int hndl = LoadGraph(filePath[i]);
+		m_hndl.push_back(hndl);
+	}
 }
 
 // 毎フレーム呼ぶ処理

@@ -1,10 +1,20 @@
 #pragma once
 #include <DxLib.h>
 #include "../lib/input.h"
+#include <vector>
 
+using namespace std;
 
 class CTitleScene {
 private:
+
+	enum tagTITLE_PICTURE {
+		TITLE_PICTURE,
+		TITLE_UI,
+
+		TITLE_PICTURE_NUM,
+	};
+
 	enum tagTITLE_SCENE {
 		TITLE_SCENE_INIT,
 		TITLE_SCENE_LOAD,
@@ -15,6 +25,10 @@ private:
 	};
 
 	tagTITLE_SCENE m_SceneID; // シーン保存
+
+	tagTITLE_PICTURE m_PictureID; // 画像保存
+
+	static vector<int>m_hndl; // 画像ハンドル
 
 public:
 	//コンストラクタ・デストラクタ
