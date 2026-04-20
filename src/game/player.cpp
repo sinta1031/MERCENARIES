@@ -13,9 +13,6 @@ static const VECTOR INITPOS = { 0.0f,30.0f,0.0f };
 static const char PLAYER_MODEL_PATH[] =
 "data/model/player/player/player.mv1";
 
-static const char KEY_PATH[] =
-"data/ui/Key.png";
-
 // コンストラクタ・デストラクタ
 CPlayer::CPlayer()
 {
@@ -32,8 +29,6 @@ void CPlayer::Init()
 {
 	m_vPos = INITPOS;
 	m_vRot = ZERO;
-	m_PosX = 1200;
-	m_PosY = 650;
 	m_gravity = 0.0f;
 	m_eState = PLAYER_STATE_NORMAL;
 	m_radius = 8.0f;

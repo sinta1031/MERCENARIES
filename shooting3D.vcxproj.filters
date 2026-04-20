@@ -176,5 +176,8 @@
     <ClInclude Include="src\lib\InputPad.h">
       <Filter>ソース ファイル\lib</Filter>
     </ClInclude>
+    <ClInclude Include="src\lib\common.h">
+      <Filter>ソース ファイル\lib</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
