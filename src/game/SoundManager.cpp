@@ -15,9 +15,7 @@ void CSoundManager::Init()
 void CSoundManager::Load()
 {
 	const char* filePath[SOUND_NUM] = {
-		"data/sound/bgm00.mp3",
-		"data/sound/se_plshot.mp3",
-		"data/sound/se_explore.mp3",
+		"data/sound/TITLE_BGM.mp3",
 
 	};
 

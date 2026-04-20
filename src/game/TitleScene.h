@@ -1,6 +1,7 @@
 #pragma once
 #include <DxLib.h>
 #include "../lib/input.h"
+#include "SoundManager.h"
 #include <vector>
 
 using namespace std;
@@ -11,8 +12,16 @@ private:
 	enum tagTITLE_PICTURE {
 		TITLE_PICTURE,
 		TITLE_UI,
+		PUSH_MANUAL,
+		TITLE_FONT_1,
+		TITLE_FONT_2,
 
 		TITLE_PICTURE_NUM,
+	};
+
+	enum tagTITLE_MENU {
+		START_GAME,
+		EXIT,
 	};
 
 	enum tagTITLE_SCENE {
@@ -24,11 +33,13 @@ private:
 		TITLE_SCENE_NUM
 	};
 
-	tagTITLE_SCENE m_SceneID; // シーン保存
-
-	tagTITLE_PICTURE m_PictureID; // 画像保存
+	VECTOR m_pos;	// 表示する座標
 
 	static vector<int>m_hndl; // 画像ハンドル
+
+	tagTITLE_SCENE m_SceneID; // シーン保存
+	tagTITLE_MENU m_MenuID;	  // 選択肢保存
+	CSoundManager c_SDM;     // サウンドマネージャー
 
 public:
 	//コンストラクタ・デストラクタ

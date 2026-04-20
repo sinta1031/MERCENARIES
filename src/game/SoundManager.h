@@ -8,10 +8,7 @@ class CSoundManager {
 public:
 
 	enum tagID{
-		BGM_GAME,      // BGM ゲーム本編
-		SE_PLSHOT,     // SE プレイヤーの弾
-		SE_EXPLOSION,  // SE 爆発音
-		VOICE_ENEMY,   // VOICE 敵の音声
+		TITLE_BGM,	// タイトルとステージ選択のBGM
 
 		SOUND_NUM,
 	};

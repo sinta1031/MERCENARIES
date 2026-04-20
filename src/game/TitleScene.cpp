@@ -2,10 +2,13 @@
 #include "../lib/input.h"
 #include "../lib/InputPad.h"
 
+// staticメンバ関数はここで各作業が必須!!
+vector<int> CTitleScene::m_hndl;
+
 //コンストラクタ
 CTitleScene::CTitleScene()
 {
-	m_SceneID = TITLE_SCENE_INIT;
+	Init();
 }
 
 //デストラクタ
@@ -28,7 +31,7 @@ int CTitleScene::Loop()
 	case CTitleScene::TITLE_SCENE_LOAD:
 		Load();
 		// タイトルのBGMを鳴らす
-		//c_SDM.TITLE(c_SDM.BGM_GAME, DX_TITLETYPE_LOOP);
+		c_SDM.Play(c_SDM.TITLE_BGM, DX_PLAYTYPE_LOOP);
 		m_SceneID = TITLE_SCENE_LOOP;
 		break;
 
@@ -50,12 +53,31 @@ int CTitleScene::Loop()
 //更新処理
 void CTitleScene::Draw()
 {
+	for (int i = 0; i < m_hndl.size(); i++)
+	{
+		if (m_hndl[i] != -1)
+		{
+			DrawRotaGraph((int)m_pos.x, (int)m_pos.y,
+				0.9, 0.0, m_hndl[i], TRUE);
+		}
 
+		if (m_MenuID == START_GAME)
+		{
+			DrawRotaGraph((int)m_pos.x, (int)m_pos.y,
+				0.9, 0.0, m_hndl[TITLE_FONT_1], TRUE);
+		}
+	}
 }
 
 //初期化
 void CTitleScene::Init()
 {
+	m_pos.x = 1280 / 2;
+	m_pos.y = 720 / 2;
+
+	m_SceneID = TITLE_SCENE_INIT;
+	m_MenuID = START_GAME;
+
 	// 中身を空にする
 	m_hndl.clear();
 }
@@ -78,9 +100,12 @@ void CTitleScene::Exit()
 void CTitleScene::Load()
 {
 	const char* filePath[TITLE_PICTURE_NUM] = {
-		"data/background/Title/TITLE",
-		"data/ui/Title/TITLE_UI",
-
+		"data/background/Title/TITLE.png",
+		"data/ui/Title/TITLE_UI.png",
+		"data/ui/Title/Push_Manual.png",
+		"data/ui/Title/TITLE_FONT_1.png",
+		"data/ui/Title/TITLE_FONT_2.png",
+		
 	};
 
 	for (int i = 0; i < TITLE_PICTURE_NUM; i++)
@@ -93,6 +118,27 @@ void CTitleScene::Load()
 // 毎フレーム呼ぶ処理
 void CTitleScene::Step()
 {
+	switch (m_MenuID)
+	{
+	case CTitleScene::START_GAME:
+
+		if (CheckHitKey(KEY_INPUT_W) || (CheckHitKey(KEY_INPUT_S) || InputPad::IsPushPadTrg(XINPUT_BUTTON_DPAD_UP) || InputPad::IsPushPadTrg(XINPUT_BUTTON_DPAD_UP))
+		{
+			m_MenuID = EXIT;
+		}
+
+		break;
+
+	case CTitleScene::EXIT:
+
+		if (CheckHitKey(KEY_INPUT_W) || (CheckHitKey(KEY_INPUT_S) || InputPad::IsPushPadTrg(XINPUT_BUTTON_DPAD_UP) || InputPad::IsPushPadTrg(XINPUT_BUTTON_DPAD_UP))
+		{
+			m_MenuID = START_GAME;
+		}
+
+		break;
+	}
+
 	if (CheckHitKey(KEY_INPUT_SPACE) || InputPad::IsPushPadTrg(XINPUT_BUTTON_B))
 	{
 		m_SceneID = TITLE_SCENE_END;
