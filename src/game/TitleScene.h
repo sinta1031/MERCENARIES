@@ -13,10 +13,16 @@ private:
 		TITLE_PICTURE,
 		TITLE_UI,
 		PUSH_MANUAL,
+		
+
+		TITLE_PICTURE_NUM,
+	};
+
+	enum tagTITLE_FONT {
 		TITLE_FONT_1,
 		TITLE_FONT_2,
 
-		TITLE_PICTURE_NUM,
+		TITLE_FONT_NUM,
 	};
 
 	enum tagTITLE_MENU {
@@ -36,6 +42,7 @@ private:
 	VECTOR m_pos;	// 表示する座標
 
 	static vector<int>m_hndl; // 画像ハンドル
+	static vector<int>m_Fhndl; // フォントハンドル
 
 	tagTITLE_SCENE m_SceneID; // シーン保存
 	tagTITLE_MENU m_MenuID;	  // 選択肢保存

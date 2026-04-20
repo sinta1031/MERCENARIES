@@ -4,6 +4,7 @@
 
 // staticメンバ関数はここで各作業が必須!!
 vector<int> CTitleScene::m_hndl;
+vector<int> CTitleScene::m_Fhndl;
 
 //コンストラクタ
 CTitleScene::CTitleScene()
@@ -19,8 +20,6 @@ CTitleScene::~CTitleScene()
 
 int CTitleScene::Loop()
 {
-	int iRet = 0;
-
 	switch (m_SceneID)
 	{
 	case CTitleScene::TITLE_SCENE_INIT:
@@ -42,12 +41,11 @@ int CTitleScene::Loop()
 	case CTitleScene::TITLE_SCENE_END:
 		Exit();
 		m_SceneID = TITLE_SCENE_INIT;
-		iRet = 1;
 		break;
 	
 	}
 
-	return iRet;
+	return m_MenuID;
 }
 
 //更新処理
@@ -60,11 +58,20 @@ void CTitleScene::Draw()
 			DrawRotaGraph((int)m_pos.x, (int)m_pos.y,
 				0.9, 0.0, m_hndl[i], TRUE);
 		}
+	}
 
+	for (int i = 0; i < m_Fhndl.size(); i++)
+	{
 		if (m_MenuID == START_GAME)
 		{
 			DrawRotaGraph((int)m_pos.x, (int)m_pos.y,
-				0.9, 0.0, m_hndl[TITLE_FONT_1], TRUE);
+				0.9, 0.0, m_Fhndl[TITLE_FONT_1], TRUE);
+		}
+
+		if (m_MenuID == EXIT)
+		{
+			DrawRotaGraph((int)m_pos.x, (int)m_pos.y,
+				0.9, 0.0, m_Fhndl[EXIT], TRUE);
 		}
 	}
 }
@@ -80,6 +87,7 @@ void CTitleScene::Init()
 
 	// 中身を空にする
 	m_hndl.clear();
+	m_Fhndl.clear();
 }
 
 //終了処理
@@ -93,6 +101,15 @@ void CTitleScene::Exit()
 			m_hndl[i] = -1;
 		}
 	}
+
+	for (int i = 0; i < m_Fhndl.size(); i++)
+	{
+		if (m_Fhndl[i] != -1)
+		{
+			DeleteGraph(m_Fhndl[i]);
+			m_Fhndl[i] = -1;
+		}
+	}
 }
 	
 
@@ -103,15 +120,25 @@ void CTitleScene::Load()
 		"data/background/Title/TITLE.png",
 		"data/ui/Title/TITLE_UI.png",
 		"data/ui/Title/Push_Manual.png",
+		
+	};
+
+	const char* fontPath[TITLE_FONT_NUM] = {
 		"data/ui/Title/TITLE_FONT_1.png",
 		"data/ui/Title/TITLE_FONT_2.png",
-		
+
 	};
 
 	for (int i = 0; i < TITLE_PICTURE_NUM; i++)
 	{
 		int hndl = LoadGraph(filePath[i]);
 		m_hndl.push_back(hndl);
+	}
+
+	for (int i = 0; i < TITLE_FONT_NUM; i++)
+	{
+		int hndl = LoadGraph(fontPath[i]);
+		m_Fhndl.push_back(hndl);
 	}
 }
 
@@ -122,7 +149,7 @@ void CTitleScene::Step()
 	{
 	case CTitleScene::START_GAME:
 
-		if (CheckHitKey(KEY_INPUT_W) || (CheckHitKey(KEY_INPUT_S) || InputPad::IsPushPadTrg(XINPUT_BUTTON_DPAD_UP) || InputPad::IsPushPadTrg(XINPUT_BUTTON_DPAD_UP))
+		if (Input::IsInputTrg(KEY_INPUT_W) || Input::IsInputTrg(KEY_INPUT_S) || InputPad::IsPushPadTrg(XINPUT_BUTTON_DPAD_UP) || InputPad::IsPushPadTrg(XINPUT_BUTTON_DPAD_UP))
 		{
 			m_MenuID = EXIT;
 		}
@@ -131,7 +158,7 @@ void CTitleScene::Step()
 
 	case CTitleScene::EXIT:
 
-		if (CheckHitKey(KEY_INPUT_W) || (CheckHitKey(KEY_INPUT_S) || InputPad::IsPushPadTrg(XINPUT_BUTTON_DPAD_UP) || InputPad::IsPushPadTrg(XINPUT_BUTTON_DPAD_UP))
+		if (Input::IsInputTrg(KEY_INPUT_W) || Input::IsInputTrg(KEY_INPUT_S) || InputPad::IsPushPadTrg(XINPUT_BUTTON_DPAD_UP) || InputPad::IsPushPadTrg(XINPUT_BUTTON_DPAD_UP))
 		{
 			m_MenuID = START_GAME;
 		}
