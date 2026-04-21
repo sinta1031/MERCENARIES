@@ -149,7 +149,7 @@ void CTitleScene::Step()
 	{
 	case CTitleScene::START_GAME:
 
-		if (Input::IsInputTrg(KEY_INPUT_W) || Input::IsInputTrg(KEY_INPUT_S) || InputPad::IsPushPadTrg(XINPUT_BUTTON_DPAD_UP) || InputPad::IsPushPadTrg(XINPUT_BUTTON_DPAD_UP))
+		if (Input::IsInputTrg(KEY_INPUT_W) || Input::IsInputTrg(KEY_INPUT_S) || InputPad::IsPushPadTrg(XINPUT_BUTTON_DPAD_UP) || InputPad::IsPushPadTrg(XINPUT_BUTTON_DPAD_DOWN))
 		{
 			m_MenuID = EXIT;
 		}
@@ -158,7 +158,7 @@ void CTitleScene::Step()
 
 	case CTitleScene::EXIT:
 
-		if (Input::IsInputTrg(KEY_INPUT_W) || Input::IsInputTrg(KEY_INPUT_S) || InputPad::IsPushPadTrg(XINPUT_BUTTON_DPAD_UP) || InputPad::IsPushPadTrg(XINPUT_BUTTON_DPAD_UP))
+		if (Input::IsInputTrg(KEY_INPUT_W) || Input::IsInputTrg(KEY_INPUT_S) || InputPad::IsPushPadTrg(XINPUT_BUTTON_DPAD_UP) || InputPad::IsPushPadTrg(XINPUT_BUTTON_DPAD_DOWN))
 		{
 			m_MenuID = START_GAME;
 		}
