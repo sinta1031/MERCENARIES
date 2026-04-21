@@ -20,6 +20,8 @@ CTitleScene::~CTitleScene()
 
 int CTitleScene::Loop()
 {
+	int iRet = -1;
+
 	switch (m_SceneID)
 	{
 	case CTitleScene::TITLE_SCENE_INIT:
@@ -41,11 +43,12 @@ int CTitleScene::Loop()
 	case CTitleScene::TITLE_SCENE_END:
 		Exit();
 		m_SceneID = TITLE_SCENE_INIT;
+		iRet = m_MenuID;
 		break;
 	
 	}
 
-	return m_MenuID;
+	return iRet;
 }
 
 //更新処理
@@ -64,14 +67,34 @@ void CTitleScene::Draw()
 	{
 		if (m_MenuID == START_GAME)
 		{
+			DrawRotaGraph((int)m_pos.x, (int)m_pos.y - 30,
+				1.0, 0.0, m_Fhndl[TITLE_FONT_1], TRUE);
+
 			DrawRotaGraph((int)m_pos.x, (int)m_pos.y,
-				0.9, 0.0, m_Fhndl[TITLE_FONT_1], TRUE);
+				1.0, 0.0, m_Fhndl[TITLE_MENU_1], TRUE);
+
+			// まずはここでアルファ値をセットする
+			SetDrawBlendMode(DX_BLENDMODE_ALPHA, 50);
+			DrawRotaGraph((int)m_pos.x, (int)m_pos.y + 40,
+				1.0, 0.0, m_Fhndl[TITLE_MENU_2], TRUE);
+			// 他の画像に影響を出さないよう、初期設定に戻す
+			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
 		}
 
 		if (m_MenuID == EXIT)
 		{
+			DrawRotaGraph((int)m_pos.x, (int)m_pos.y - 30,
+				1.0, 0.0, m_Fhndl[TITLE_FONT_2], TRUE);
+
+			// まずはここでアルファ値をセットする
+			SetDrawBlendMode(DX_BLENDMODE_ALPHA, 50);
 			DrawRotaGraph((int)m_pos.x, (int)m_pos.y,
-				0.9, 0.0, m_Fhndl[EXIT], TRUE);
+				1.0, 0.0, m_Fhndl[TITLE_MENU_1], TRUE);
+			// 他の画像に影響を出さないよう、初期設定に戻す
+			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
+
+			DrawRotaGraph((int)m_pos.x, (int)m_pos.y + 40,
+				1.0, 0.0, m_Fhndl[TITLE_MENU_2], TRUE);
 		}
 	}
 }
@@ -126,6 +149,8 @@ void CTitleScene::Load()
 	const char* fontPath[TITLE_FONT_NUM] = {
 		"data/ui/Title/TITLE_FONT_1.png",
 		"data/ui/Title/TITLE_FONT_2.png",
+		"data/ui/Title/TITLE_MENU_1.png",
+		"data/ui/Title/TITLE_MENU_2.png",
 
 	};
 

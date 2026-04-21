@@ -1,7 +1,7 @@
 #pragma once
 #include <DxLib.h>
 
-static const int USE_PAD_NUM = 1;				//使用するコントローラーの数
+static const int USE_PAD_NUM = 1;			//使用するコントローラーの数
 
 static const short THUMB_MAX = 32767;		//アナログスティックの最大強度
 

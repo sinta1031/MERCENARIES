@@ -1,15 +1,16 @@
 #include "input.h"
 #include <DxLib.h>
 
-
-INPUT_DATA g_inputData;
+char Input::m_nuwkey[KEYBOARD_NUM];     //現在のボタン情報
+char Input::m_Prevker[KEYBOARD_NUM];    //フレーム前のボタン情報
 
 //=============================
 //キー入力情報の初期化
 //=============================
 void Input::InitInput() 
 {
-	g_inputData.m_Prevker = g_inputData.m_nuwkey = 0;
+	memset(m_nuwkey, 0, KEYBOARD_NUM);
+	memset(m_Prevker, 0, KEYBOARD_NUM);
 }
 
 //============================
@@ -17,85 +18,8 @@ void Input::InitInput()
 //============================
 void  Input::UpdateInput()
 {
-	//最新情報は１フレーム前の情報になる
-	g_inputData.m_Prevker = g_inputData.m_nuwkey;
-	//いったん最新情報は初期化
-	g_inputData.m_nuwkey = 0;
-
-	//最新情報を取得していく
-	//上キー情報取得
-	if (/*CheckHitKey(KEY_INPUT_UP) ||*/ CheckHitKey(KEY_INPUT_W) /*|| GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_UP*/)
-	{
-		g_inputData.m_nuwkey |= KEY_UP;
-	}
-
-	if (CheckHitKey(KEY_INPUT_UP))
-	{
-		g_inputData.m_nuwkey |= KEY_UP2;
-	}
-
-	//下キー情報取得
-	if (/*CheckHitKey(KEY_INPUT_DOWN) ||*/ CheckHitKey(KEY_INPUT_S) /*|| GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_DOWN*/)
-	{
-		g_inputData.m_nuwkey |= KEY_DOWN;
-	}
-	if (CheckHitKey(KEY_INPUT_DOWN))
-	{
-		g_inputData.m_nuwkey |= KEY_DOWN2;
-	}
-
-	//左キー情報取得
-	if (/*CheckHitKey(KEY_INPUT_LEFT) ||*/ CheckHitKey(KEY_INPUT_A) /*|| GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_LEFT*/)
-	{
-		g_inputData.m_nuwkey |= KEY_LEFT;
-	}
-	if (CheckHitKey(KEY_INPUT_LEFT))
-	{
-		g_inputData.m_nuwkey |= KEY_LEFT2;
-	}
-
-	//右キー情報取得
-	if (/*CheckHitKey(KEY_INPUT_RIGHT) ||*/ CheckHitKey(KEY_INPUT_D) /*|| GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_UP*/)
-	{
-		g_inputData.m_nuwkey |= KEY_RIGHT;
-	}
-	if (CheckHitKey(KEY_INPUT_RIGHT))
-	{
-		g_inputData.m_nuwkey |= KEY_RIGHT2;
-	}
-
-	//スキルキー情報取得
-	if (CheckHitKey(KEY_INPUT_E)/* || GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_DOWN*/)
-	{
-		g_inputData.m_nuwkey |= KEY_SKILL;
-	}
-	//Zスキルキー情報取得
-	if (CheckHitKey(KEY_INPUT_Q) /*|| GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_LEFT*/)
-	{
-		g_inputData.m_nuwkey |= KEY_ZSKILL;
-	}
-	//コマンド情報取得
-	if (CheckHitKey(KEY_INPUT_LSHIFT) || GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_2)
-	{
-		g_inputData.m_nuwkey |= KEY_COMMAND;
-	}
-
-	//Vキー情報取得
-	if (CheckHitKey(KEY_INPUT_V))
-	{
-		g_inputData.m_nuwkey |= KEY_V;
-	}
-	//Bキー情報取得
-	if (CheckHitKey(KEY_INPUT_B))
-	{
-		g_inputData.m_nuwkey |= KEY_B;
-	}
-
-	//SPACEキー情報取得
-	if (CheckHitKey(KEY_INPUT_SPACE))
-	{
-		g_inputData.m_nuwkey |= KEY_SPACE;
-	}
+	memcpy(m_Prevker, m_nuwkey, KEYBOARD_NUM);
+	GetHitKeyStateAll(m_nuwkey);
 }
 
 //=============================
@@ -103,15 +27,7 @@ void  Input::UpdateInput()
 //=============================
 bool  Input::IsInputRep(unsigned int key)
 {
-	if ((g_inputData.m_nuwkey & key) != 0)
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-	
+	return m_nuwkey[key] == 1;
 }
 
 //=================================
@@ -119,14 +35,6 @@ bool  Input::IsInputRep(unsigned int key)
 //=================================
 bool  Input::IsInputTrg(unsigned int key)
 {
-	//今回ボタンが押された　かつ　前回押されていない
-	if ((g_inputData.m_nuwkey & key) != 0
-		 && (g_inputData.m_Prevker & key) == 0)
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+		//今回ボタンが押された　かつ　前回押されていない
+	return (m_nuwkey[key] == 1 && m_Prevker[key] != 1);
 }

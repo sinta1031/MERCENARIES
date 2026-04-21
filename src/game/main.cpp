@@ -51,7 +51,7 @@ int  WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		//ここにゲームの本体を書く
 		
 		// プレイヤーの移動========================
-		c_SM.Loop();
+		if (c_SM.Loop() == 1)break;
 		c_FPS.StepFps();
 		//=========================================
 		// モデル表示

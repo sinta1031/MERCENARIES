@@ -134,7 +134,7 @@ void  CPlayer::Step()
 	}
 
 	//スペースキーが押されたらジャンプする
-	if (Input::IsInputTrg(KEY_SPACE) || InputPad::IsPushPadTrg(XINPUT_BUTTON_A))
+	if (Input::IsInputTrg(KEY_INPUT_SPACE) || InputPad::IsPushPadTrg(XINPUT_BUTTON_A))
 	{
 		jump();
 	}

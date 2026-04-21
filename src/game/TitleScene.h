@@ -21,6 +21,8 @@ private:
 	enum tagTITLE_FONT {
 		TITLE_FONT_1,
 		TITLE_FONT_2,
+		TITLE_MENU_1,
+		TITLE_MENU_2,
 
 		TITLE_FONT_NUM,
 	};

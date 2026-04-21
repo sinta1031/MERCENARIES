@@ -25,12 +25,18 @@ int CSceneManager::Loop()
 	InputPad::Update();
 	int iRet = 0;
 
+	int TitleRes = -1;
+
 	switch (m_SceneID)
 	{
 	case CSceneManager::SCENE_TITLE:
-		if (c_TS.Loop() != 0)
+		TitleRes = c_TS.Loop();
+		if (TitleRes == 0)
 		{
 			m_SceneID = SCENE_PLAY;
+		}
+		else if (TitleRes == 1) {
+			iRet = 1;
 		}
 		break;
 
@@ -69,7 +75,7 @@ void CSceneManager::Draw()
 	case CSceneManager::SCENE_RESULT:
 		c_RS.Draw();
 		break;
-	
+
 	}
 }
 
