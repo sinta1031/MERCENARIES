@@ -3,6 +3,8 @@
 #include "PlayScene.h"
 #include "TitleScene.h"
 #include "ResultScene.h"
+#include "StageSelectScene.h"
+#include "CharacterSelectScene.h"
 #include "../lib/input.h"
 #include "../lib/InputPad.h"
 
@@ -21,6 +23,8 @@ private:
 	CPlayScene c_PS; 
 	CTitleScene c_TS;
 	CResultScene c_RS;
+	CStageSelectScene c_SSS;
+	CCharacterSelectScene c_CSS;
 	Input c_I;
 	InputPad c_IP;
 	tagSCENE m_SceneID; // ÉVÅ[Éìï€ë∂

@@ -33,10 +33,24 @@ int CSceneManager::Loop()
 		TitleRes = c_TS.Loop();
 		if (TitleRes == 0)
 		{
-			m_SceneID = SCENE_PLAY;
+			m_SceneID = SCENE_STAGE_SELECT;
 		}
 		else if (TitleRes == 1) {
 			iRet = 1;
+		}
+		break;
+
+	case CSceneManager::SCENE_STAGE_SELECT:
+		if (c_SSS.Loop() != 0)
+		{
+			m_SceneID = SCENE_CHARACTER_SELECT;
+		}
+		break;
+
+	case CSceneManager::SCENE_CHARACTER_SELECT:
+		if (c_CSS.Loop() != 0)
+		{
+			m_SceneID = SCENE_PLAY;
 		}
 		break;
 
@@ -66,6 +80,14 @@ void CSceneManager::Draw()
 	{
 	case CSceneManager::SCENE_TITLE:
 		c_TS.Draw();
+		break;
+
+	case CSceneManager::SCENE_STAGE_SELECT:
+		c_SSS.Draw();
+		break;
+
+	case CSceneManager::SCENE_CHARACTER_SELECT:
+		c_CSS.Draw();
 		break;
 
 	case CSceneManager::SCENE_PLAY:

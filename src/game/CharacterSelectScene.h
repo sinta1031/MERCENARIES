@@ -3,23 +3,23 @@
 #include "../lib/input.h"
 
 
-class CResultScene {
+class CCharacterSelectScene {
 private:
-	enum tagRESULT_SCENE {
-		RESULT_SCENE_INIT,
-		RESULT_SCENE_LOAD,
-		RESULT_SCENE_LOOP,
-		RESULT_SCENE_END,
+	enum tagCHARACTER_SELECT_SCENE {
+		CHARACTER_SELECT_SCENE_INIT,
+		CHARACTER_SELECT_SCENE_LOAD,
+		CHARACTER_SELECT_SCENE_LOOP,
+		CHARACTER_SELECT_SCENE_END,
 
-		RESULT_SCENE_NUM
+		CHARACTER_SELECT_SCENE_NUM
 	};
 
-	tagRESULT_SCENE m_SceneID; // シーン保存
+	tagCHARACTER_SELECT_SCENE m_SceneID; // シーン保存
 
 public:
 	//コンストラクタ・デストラクタ
-	CResultScene();
-	~CResultScene();
+	CCharacterSelectScene();
+	~CCharacterSelectScene();
 
 	// 繰り返し行う処理
 	int Loop();
