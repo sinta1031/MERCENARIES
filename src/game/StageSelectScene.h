@@ -15,7 +15,16 @@ private:
 		STAGE_SELECT_SCENE_NUM
 	};
 
+	enum tagSCENE_SELECT {
+		BACK,
+		NEXT,
+		WAIT,
+	};
+
 	tagSTAGE_SELECT_SCENE m_SceneID; // シーン保存
+	tagSCENE_SELECT m_SelectID;		 // 選択肢保存
+
+	CSoundManager c_SDM;     // サウンドマネージャー
 
 public:
 	//コンストラクタ・デストラクタ

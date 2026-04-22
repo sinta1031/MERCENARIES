@@ -26,6 +26,8 @@ int CSceneManager::Loop()
 	int iRet = 0;
 
 	int TitleRes = -1;
+	int StageSelectRes = -1;
+	int CharacterSelectRes = -1;
 
 	switch (m_SceneID)
 	{
@@ -35,20 +37,31 @@ int CSceneManager::Loop()
 		{
 			m_SceneID = SCENE_STAGE_SELECT;
 		}
-		else if (TitleRes == 1) {
+		else if (TitleRes == 1) 
+		{
 			iRet = 1;
 		}
 		break;
 
 	case CSceneManager::SCENE_STAGE_SELECT:
-		if (c_SSS.Loop() != 0)
+		StageSelectRes = c_SSS.Loop();
+		if (StageSelectRes == 0)
+		{
+			m_SceneID = SCENE_TITLE;
+		}
+		else if (StageSelectRes == 1)
 		{
 			m_SceneID = SCENE_CHARACTER_SELECT;
 		}
 		break;
 
 	case CSceneManager::SCENE_CHARACTER_SELECT:
-		if (c_CSS.Loop() != 0)
+		CharacterSelectRes = c_CSS.Loop();
+		if (CharacterSelectRes == 0)
+		{
+			m_SceneID = SCENE_STAGE_SELECT;
+		}
+		else if (CharacterSelectRes == 1)
 		{
 			m_SceneID = SCENE_PLAY;
 		}

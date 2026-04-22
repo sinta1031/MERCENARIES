@@ -76,7 +76,7 @@ void CResultScene::Load()
 // –ˆƒtƒŒ[ƒ€ŒÄ‚Ôˆ—
 void CResultScene::Step()
 {
-	if (CheckHitKey(KEY_INPUT_SPACE) || InputPad::IsPushPadTrg(XINPUT_BUTTON_B))
+	if (CheckHitKey(KEY_INPUT_RETURN) || InputPad::IsPushPadTrg(XINPUT_BUTTON_B))
 	{
 		m_SceneID = RESULT_SCENE_END;
 	}

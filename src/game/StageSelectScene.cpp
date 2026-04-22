@@ -16,7 +16,7 @@ CStageSelectScene::~CStageSelectScene()
 
 int CStageSelectScene::Loop()
 {
-	int iRet = 0;
+	int iRet = -1;
 
 	switch (m_SceneID)
 	{
@@ -27,8 +27,6 @@ int CStageSelectScene::Loop()
 
 	case CStageSelectScene::STAGE_SELECT_SCENE_LOAD:
 		Load();
-		// タイトルのBGMを鳴らす
-		/*c_SDM.RESULT(c_SDM.BGM_GAME, DX_RESULTTYPE_LOOP);*/
 		m_SceneID = STAGE_SELECT_SCENE_LOOP;
 		break;
 
@@ -38,9 +36,8 @@ int CStageSelectScene::Loop()
 
 	case CStageSelectScene::STAGE_SELECT_SCENE_END:
 		Exit();
-		//c_SDM.AllStop();
-		m_SceneID = STAGE_SELECT_SCENE_END;
-		iRet = 1;
+		m_SceneID = STAGE_SELECT_SCENE_INIT;
+		iRet = m_SelectID;
 		break;
 	
 	}
@@ -57,7 +54,7 @@ void CStageSelectScene::Draw()
 //初期化
 void CStageSelectScene::Init()
 {
-	
+	m_SelectID = WAIT;
 }
 
 //終了処理
@@ -65,7 +62,6 @@ void CStageSelectScene::Exit()
 {
 
 }
-	
 
 //データロード
 void CStageSelectScene::Load()
@@ -76,8 +72,15 @@ void CStageSelectScene::Load()
 // 毎フレーム呼ぶ処理
 void CStageSelectScene::Step()
 {
-	if (Input::IsInputTrg(KEY_INPUT_SPACE) || InputPad::IsPushPadTrg(XINPUT_BUTTON_B))
+	if (Input::IsInputTrg(KEY_INPUT_RETURN) || InputPad::IsPushPadTrg(XINPUT_BUTTON_B))
 	{
+		c_SDM.Play(c_SDM.PUSH_SE, DX_PLAYTYPE_BACK);
+		m_SelectID = NEXT;
+		m_SceneID = STAGE_SELECT_SCENE_END;
+	}
+	else if (Input::IsInputTrg(KEY_INPUT_SPACE))
+	{
+		m_SelectID = BACK;
 		m_SceneID = STAGE_SELECT_SCENE_END;
 	}
 }

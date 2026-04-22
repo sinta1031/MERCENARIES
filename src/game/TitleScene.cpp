@@ -135,7 +135,6 @@ void CTitleScene::Exit()
 	}
 }
 	
-
 //データロード
 void CTitleScene::Load()
 {
@@ -191,8 +190,9 @@ void CTitleScene::Step()
 		break;
 	}
 
-	if (Input::IsInputTrg(KEY_INPUT_SPACE) || InputPad::IsPushPadTrg(XINPUT_BUTTON_B))
+	if (Input::IsInputTrg(KEY_INPUT_RETURN) || InputPad::IsPushPadTrg(XINPUT_BUTTON_B))
 	{
 		m_SceneID = TITLE_SCENE_END;
+		c_SDM.Play(c_SDM.PUSH_SE, DX_PLAYTYPE_BACK);
 	}
 }
