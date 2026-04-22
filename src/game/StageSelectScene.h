@@ -1,6 +1,7 @@
 #pragma once
 #include <DxLib.h>
 #include "../lib/input.h"
+#include "SoundManager.h"
 
 
 class CStageSelectScene {

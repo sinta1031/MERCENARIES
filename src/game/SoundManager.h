@@ -9,6 +9,7 @@ public:
 
 	enum tagID{
 		TITLE_BGM,	// タイトルとステージ選択のBGM
+		PUSH_SE,	// 決定音
 
 		SOUND_NUM,
 	};
