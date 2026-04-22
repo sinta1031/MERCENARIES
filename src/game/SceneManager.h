@@ -9,9 +9,11 @@
 class CSceneManager {
 private:
 	enum tagSCENE {
-		SCENE_TITLE,  // タイトル画面
-		SCENE_PLAY,   // ゲーム中
-		SCENE_RESULT, // リザルト画面
+		SCENE_TITLE,			// タイトル画面
+		SCENE_STAGE_SELECT,		// ステージセレクト画面
+		SCENE_CHARACTER_SELECT, // キャラクターセレクト画面
+		SCENE_PLAY,				// ゲーム中
+		SCENE_RESULT,			// リザルト画面
 
 		SCENE_NUM
 	};

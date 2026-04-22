@@ -134,6 +134,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\game\CameraManager.cpp" />
+    <ClCompile Include="src\game\CharacterSelectScene.cpp" />
     <ClCompile Include="src\game\CollisionManager.cpp" />
     <ClCompile Include="src\game\Debugcamera.cpp" />
     <ClCompile Include="src\game\Enemy.cpp" />
@@ -149,6 +150,7 @@
     <ClCompile Include="src\game\Shot.cpp" />
     <ClCompile Include="src\game\ShotManager.cpp" />
     <ClCompile Include="src\game\SoundManager.cpp" />
+    <ClCompile Include="src\game\StageSelectScene.cpp" />
     <ClCompile Include="src\game\TitleScene.cpp" />
     <ClCompile Include="src\lib\collision.cpp" />
     <ClCompile Include="src\lib\debug.cpp" />
@@ -158,6 +160,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\game\CameraManager.h" />
+    <ClInclude Include="src\game\CharacterSelectScene.h" />
     <ClInclude Include="src\game\CollisionManager.h" />
     <ClInclude Include="src\game\Debugcamera.h" />
     <ClInclude Include="src\game\Enemy.h" />
@@ -172,6 +175,7 @@
     <ClInclude Include="src\game\Shot.h" />
     <ClInclude Include="src\game\ShotManager.h" />
     <ClInclude Include="src\game\SoundManager.h" />
+    <ClInclude Include="src\game\StageSelectScene.h" />
     <ClInclude Include="src\game\TitleScene.h" />
     <ClInclude Include="src\lib\collision.h" />
     <ClInclude Include="src\lib\common.h" />
