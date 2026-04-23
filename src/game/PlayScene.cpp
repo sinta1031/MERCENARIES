@@ -110,7 +110,7 @@ void CPlayScene::Step()
 	c_CLM.CheckHitShotToEnemy(c_SM, c_EM);
 	c_CLM.CheckHitPlayerToEnemy(c_PM.Getplayerinstance(), c_EM);
 
-	//プレイヤーの生存フラグが消えたら、またはゴールしたらゲーム終了へ
+	//プレイヤーの生存フラグが消えたらゲーム終了へ
 	if (c_PM.Getplayerinstance().IsActive() == false)
 	{
 		m_SceneID = PLAY_SCENE_END;
