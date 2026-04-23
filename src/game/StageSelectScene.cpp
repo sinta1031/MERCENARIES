@@ -78,7 +78,7 @@ void CStageSelectScene::Step()
 		m_SelectID = NEXT;
 		m_SceneID = STAGE_SELECT_SCENE_END;
 	}
-	else if (Input::IsInputTrg(KEY_INPUT_SPACE))
+	else if (Input::IsInputTrg(KEY_INPUT_SPACE) || InputPad::IsPushPadTrg(XINPUT_BUTTON_A))
 	{
 		m_SelectID = BACK;
 		m_SceneID = STAGE_SELECT_SCENE_END;

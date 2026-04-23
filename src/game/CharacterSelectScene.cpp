@@ -80,7 +80,7 @@ void CCharacterSelectScene::Step()
 		c_SDM.Stop(c_SDM.TITLE_BGM);
 		m_SceneID = CHARACTER_SELECT_SCENE_END;
 	}
-	else if (Input::IsInputTrg(KEY_INPUT_SPACE))
+	else if (Input::IsInputTrg(KEY_INPUT_SPACE) || InputPad::IsPushPadTrg(XINPUT_BUTTON_A))
 	{
 		m_SelectID = BACK;
 		m_SceneID = CHARACTER_SELECT_SCENE_END;

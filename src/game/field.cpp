@@ -1,7 +1,7 @@
 #include "filed.h"
 
 static const char SKY_MODEL_PATH[] = 
-"data/field/field/Sky/sky.mv1";
+"data/field/field/Sky/VILLAGE/sky.mv1";
 
 static const char FILED_MODEL_PATH[] =
 "data/field/field/stage1/stage1.x";
