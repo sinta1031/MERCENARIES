@@ -23,13 +23,13 @@ void CCameraManager::Init()
 //----------------------------
 // メイン処理
 //----------------------------
-void CCameraManager::Step(VECTOR focus1, float rotY1)
+void CCameraManager::Step(VECTOR focus1)
 {
 	switch (m_id)
 	{
 		// ゲーム中のメインカメラ
 	case ID_PLAY:
-		m_play.Step(focus1, rotY1);
+		m_play.Step(focus1);
 		break;
 
 		// デバッグ用のカメラ

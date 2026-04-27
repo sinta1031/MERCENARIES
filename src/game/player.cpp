@@ -75,7 +75,7 @@ void  CPlayer::Exit()
 void  CPlayer::Step()
 {
 	float tempRotY = 180.0f * DX_PI_F / 180.0f;
-	float PL_SPEED = 2.0f;
+	float PL_SPEED = 1.0f;
 	VECTOR speed = ZERO;        // 移動速度
 	VECTOR vSpeed;              // 移動速度
 
@@ -105,12 +105,15 @@ void  CPlayer::Step()
 	if (speed.x != 0.0f || speed.z != 0.0f)
 	{
 		// 移動速度で計算する
+		speed = VNorm(speed);
 		MATRIX trans = MGetTranslate(speed);	         // 移動行列
 		MATRIX rotY = MGetRotY(m_CameraRot.y);	//MGetRotY(GetRotCamera(m_plca.GetCamareRot()));   // 回転行列
 		MATRIX res = MMult(trans, rotY);
 		vSpeed.x = res.m[3][0];
 		vSpeed.y = res.m[3][1];
 		vSpeed.z = res.m[3][2];
+
+		vSpeed = VScale(vSpeed, 2.0f);
 
 		/*vSpeed.x = sinf(tempRotY);
 		vSpeed.y = 0.0f;

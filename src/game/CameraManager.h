@@ -16,7 +16,7 @@ public:
 
 private:
 
-	CPlayCamera m_play;       // メインとなるカメラ
+	PlayCamera m_play;       // メインとなるカメラ
 	CDebugCamera m_debug;     // デバッグモードのカメラ
 	tagCameraID m_id;         // 今どのカメラを使っているか	
 
@@ -31,7 +31,7 @@ public:
 	// カメラの座標計算
 	// @focus :  プレイヤーの座標
 	// @rotY  :  プレイヤーの角度
-	void Step(VECTOR focus1, float rotY1);
+	void Step(VECTOR focus1);
 
 	// カメラの更新
 	void Update();
@@ -46,7 +46,7 @@ public:
 	tagCameraID GetID() { return m_id; }
 
 	// カメラの座標取得
-	VECTOR PGetCamareRot() { return  m_play.GetCamareRot(); }
+	VECTOR PGetCamareRot() { return  m_play.GetCameraRot(); }
 
 };
 

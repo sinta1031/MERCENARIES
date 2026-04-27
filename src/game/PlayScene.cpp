@@ -90,7 +90,7 @@ void CPlayScene::Step()
 {
 	c_PM.SetCameraRot(c_CM.PGetCamareRot());
 	c_PM.Step();
-	c_CM.Step(c_PM.Getplayerinstance().GetPos(), c_PM.Getplayerinstance().GetRot());
+	c_CM.Step(c_PM.Getplayerinstance().GetPos());
 	c_F.Step();
 	c_SM.Step();
 

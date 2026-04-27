@@ -72,9 +72,6 @@
     <ClCompile Include="src\game\EnemyManager.cpp">
       <Filter>ソース ファイル\src\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="src\game\playCamera.cpp">
-      <Filter>ソース ファイル\src\camera</Filter>
-    </ClCompile>
     <ClCompile Include="src\game\PlayerManager.cpp">
       <Filter>ソース ファイル\src\player</Filter>
     </ClCompile>
@@ -117,6 +114,9 @@
     <ClCompile Include="src\game\CharacterSelectScene.cpp">
       <Filter>ソース ファイル\src\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="src\game\PlayCamera.cpp">
+      <Filter>ソース ファイル\src\camera</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\lib\collision.h">
@@ -145,9 +145,6 @@
     </ClInclude>
     <ClInclude Include="src\game\filed.h">
       <Filter>ソース ファイル\src\field</Filter>
-    </ClInclude>
-    <ClInclude Include="src\game\PlayCamera.h">
-      <Filter>ソース ファイル\src\camera</Filter>
     </ClInclude>
     <ClInclude Include="src\game\PlayerManager.h">
       <Filter>ソース ファイル\src\player</Filter>
@@ -190,6 +187,9 @@
     </ClInclude>
     <ClInclude Include="src\game\CharacterSelectScene.h">
       <Filter>ソース ファイル\src\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\PlayCamera.h">
+      <Filter>ソース ファイル\src\camera</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

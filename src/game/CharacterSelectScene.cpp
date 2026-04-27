@@ -5,7 +5,7 @@
 //コンストラクタ
 CCharacterSelectScene::CCharacterSelectScene()
 {
-	m_SceneID = CHARACTER_SELECT_SCENE_INIT;
+	Init();
 }
 
 //デストラクタ
@@ -54,6 +54,7 @@ void CCharacterSelectScene::Draw()
 //初期化
 void CCharacterSelectScene::Init()
 {
+	m_SceneID = CHARACTER_SELECT_SCENE_INIT;
 	m_SelectID = WAIT;
 }
 

@@ -141,7 +141,7 @@
     <ClCompile Include="src\game\EnemyManager.cpp" />
     <ClCompile Include="src\game\field.cpp" />
     <ClCompile Include="src\game\main.cpp" />
-    <ClCompile Include="src\game\playCamera.cpp" />
+    <ClCompile Include="src\game\PlayCamera.cpp" />
     <ClCompile Include="src\game\player.cpp" />
     <ClCompile Include="src\game\PlayerManager.cpp" />
     <ClCompile Include="src\game\PlayScene.cpp" />
