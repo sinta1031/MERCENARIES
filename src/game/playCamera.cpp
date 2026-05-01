@@ -21,16 +21,15 @@ void PlayCamera::Init() {
 	m_TargetPos = VZERO;
 	m_UpVec = UP_VEC;			//？？？
 	m_CameraRot = VZERO;
-	m_CameraPoint = VZERO;
 	m_CalcRot = VZERO;
 	m_IsTarget1 = false;
 	m_IsTarget2 = false;
 	m_IsFree1 = false;
 	m_IsFree2 = false;
 
-	//ゲーム開始時にプレイヤーの後頭部から始まるようにする
-	m_CameraPoint = { -0.5f,25.0f,52.5f };
-	m_CameraPos = { -0.5f,25.0f,52.5f };
+	////ゲーム開始時にプレイヤーの後頭部から始まるようにする
+	//m_CameraPoint = { -0.5f,25.0f,52.5f };
+	//m_CameraPos = { -0.5f,25.0f,52.5f };
 }
 //毎フレーム呼び出す処理(ノーマル)
 void PlayCamera::Step(VECTOR _TargetPos) {
