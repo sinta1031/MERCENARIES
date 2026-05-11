@@ -90,7 +90,7 @@ void PlayCamera::Step(VECTOR _TargetPos) {
 
 	//相対ベクトル
 	/*m_TargetPoint.y= 25.0f;*/
-	VECTOR OffSet = VGet(0.0f, 25.0f, 100.0f);
+	VECTOR OffSet = VGet(0.0f, 35.0f, 50.0f);
 
 	//カメラ位置
 	VECTOR CameraPosCalc = VTransform(OffSet, MatRot);

@@ -6,7 +6,7 @@
 CSceneManager::CSceneManager()
 {
 	// Å‰‚ÌƒV[ƒ“‚ğİ’è
-	m_SceneID = SCENE_TITLE;
+	m_SceneID = SCENE_PLAY;
 	// ‰¹‚Ì‰Šú‰»
 	CSoundManager::Init();
 	CSoundManager::Load();
