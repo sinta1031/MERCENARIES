@@ -4,7 +4,7 @@ static const char SKY_MODEL_PATH[] =
 "data/field/field/Sky/VILLAGE/sky.mv1";
 
 static const char FILED_MODEL_PATH[] =
-"data/field/field/stage1/stage1.x";
+"data/field/field/Village/Village.mv1";
 
   
 // コンストラクタ・デストラクタ
@@ -69,9 +69,10 @@ void  CFiled::Load()
 //フィールドのアップデート
 void CFiled::Update()
 {
+	//ステージ専用のギミックがあるなら
 	switch (m_tagstage)
 	{
-
+		//それぞれに記入
 	case CFiled::STAGE1:
 
 		break;
