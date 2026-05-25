@@ -14,6 +14,31 @@ public:
 		PLAYER_STATE_NUM,
 	};
 
+	enum FrameNamber{
+		ARMATURE,				//原点とれるよ
+		HIP,					//お尻
+		SPINE,					//脊髄
+		CHEST,					//胸骨
+		HEAD,					//頭蓋骨
+		HEAD_END,				//頭の頂点
+		SHOULDER_LEFT,			//左鎖骨
+		UPPERARM_LEFT,			//左上腕骨
+		LOWERARM_LEFT,			//左尺骨
+		LOWERARM_LEFT_END,		//左指骨
+		SHOULDER_RIGHT,			//右鎖骨
+		UPEERARM_RIGHT,			//右上腕骨
+		LOWERARM_RIGHT,			//右尺骨
+		LOWERARM_RIGHT_END,		//右指骨
+		PELBIS_LEFT,			//左骨盤
+		UPPERLEG_LEFT,			//左大腿骨
+		LOWERLEG_LEFT,			//左脛骨
+		LOWERLEG_LEFT_END,		//左指骨
+		PELBIS_RIGHT,			//右骨盤
+		UPEERLEG_RIGHT,			//右大腿骨
+		LOWERLEG_RIGHT,			//右脛骨
+		LOWERLEG_RIGHT_END,		//右指骨
+	};
+
 private:
 	
 		VECTOR m_vPos;               // 座標
@@ -74,6 +99,9 @@ public:
 	// 当たり判定の半径サイズを取得
 	float GetRadius() { return m_radius; }
 
+	//モデルハンドル取得
+	int GetHndl() { return m_Hndl; }
+
 	//生存情報取得
 	bool IsActive() { return m_isActive; }
 	void SetActive(bool active) { m_isActive = active; }
@@ -83,4 +111,7 @@ public:
 
 	//現在位置に座標加算
 	void ReflectCollision(VECTOR addVec);
+
+	//指定したフレームの座標を渡す
+	VECTOR GetFramePos(int _Hndl, int _FrameNum)const { return MV1GetFramePosition(_Hndl, _FrameNum); }
 };
