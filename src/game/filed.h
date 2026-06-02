@@ -1,5 +1,8 @@
 #pragma once
 #include <DxLib.h>
+#include <vector>
+
+using namespace std;
 
 class CFiled {
 private:
@@ -11,9 +14,19 @@ private:
 		STAGE3,
 	};
 
+	//ステージ1:村
+	enum tagVillage {
+		PARTS1,
+		PARTS2,
+		PARTS3,
+
+		VILLAGE_PARTS_NUM,
+	};
+
 	tagSTAGE m_tagstage;            //ステージ状態
 
-	int m_fieldhndl;                //フィールドハンドル
+	static vector<int>m_hndl; // フィールドハンドル
+
 	int m_Skyhndl;					//スカイハンドル
 	VECTOR m_SkyScale;				//スカイスケール
 	VECTOR m_Rot;                   //回転速度

@@ -13,7 +13,6 @@ private:
 		TITLE_PICTURE,
 		TITLE_UI,
 		PUSH_MANUAL,
-		
 
 		TITLE_PICTURE_NUM,
 	};

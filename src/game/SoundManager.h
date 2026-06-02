@@ -8,8 +8,18 @@ class CSoundManager {
 public:
 
 	enum tagID{
-		TITLE_BGM,	// タイトルとステージ選択のBGM
-		PUSH_SE,	// 決定音
+		TITLE_BGM,			// タイトルとステージ選択のBGM
+		PUSH_SE,			// 決定音
+		KNIGHT_THEME,		// 騎士のBGM
+		KNIGHT_MAYHEM,		// 騎士：メイヘムモード
+		GUNMAN_THEME,		// ガンマンのBGM
+		GUNMAN_MAYHEM,		// ガンマン：メイヘムモード
+		FIGHTER_THEME,		// ファイターのBGM
+		FIGHTER_MAYHEM,		// ファイター：メイヘムモード
+		MILITARY_THEME,		// ミリタリーのBGM
+		MILITARY_MAYHEM,	// ミリタリー：メイヘムモード
+		MINI_BOSS_THEME,	// ミニボスのBGM
+		MINI_BOSS_MAYHEM,	// ミニボス：メイヘムモード
 
 		SOUND_NUM,
 	};

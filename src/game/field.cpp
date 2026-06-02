@@ -1,12 +1,11 @@
 #include "filed.h"
 
+// staticメンバ関数はここで各作業が必須!!
+vector<int> CFiled::m_hndl;
+
 static const char SKY_MODEL_PATH[] = 
 "data/field/field/Sky/VILLAGE/sky.mv1";
 
-static const char FILED_MODEL_PATH[] =
-"data/field/field/Village/Village.mv1";
-
-  
 // コンストラクタ・デストラクタ
 CFiled::CFiled()
 {
@@ -24,7 +23,7 @@ void CFiled::Init()
 	m_tagstage = STAGE1;
 
 	//ステージ
-	m_fieldhndl = -1;
+	m_hndl.clear();
 	m_isHitFlag = false;
 
 	//背景
@@ -42,13 +41,21 @@ void CFiled::Step()
 //ロード
 void  CFiled::Load()
 {
+	//最初にロード
+	const char* VillagePath[VILLAGE_PARTS_NUM] = {
+	"data/field/field/Village/Village.mv1",
+	"data/field/field/Village/Village1.mv1",
+	"data/field/field/Village/Village2.mv1",
+
+	};
+
 	switch (m_tagstage)
 	{
 	case CFiled::STAGE1:
-
-		if (m_fieldhndl == -1)
+		for (int i = 0; i < VILLAGE_PARTS_NUM; i++)
 		{
-			m_fieldhndl = MV1LoadModel(FILED_MODEL_PATH);
+			int hndl = MV1LoadModel(VillagePath[i]);
+			m_hndl.push_back(hndl);
 		}
 
 		if (m_Skyhndl == -1)
@@ -74,12 +81,25 @@ void CFiled::Update()
 	{
 		//それぞれに記入
 	case CFiled::STAGE1:
+		for (int i = 0; i < m_hndl.size(); i++)
+		{
+			if (m_hndl[i] != -1)
+			{
+				//ポリゴンの情報取得
+				MV1SetupCollInfo(m_hndl[i]);
+			}
+		}
+
+		break;
+	case CFiled::STAGE2:
+
+		break;
+	case CFiled::STAGE3:
 
 		break;
 	}
 
 	//ポリゴンの情報取得
-	MV1SetupCollInfo(m_fieldhndl);
 	MV1SetRotationXYZ(m_Skyhndl, m_Rot);
 
 }
@@ -88,15 +108,22 @@ void CFiled::Update()
 void  CFiled::Draw()
 {
 	//ステージ描画
-	MV1DrawModel(m_fieldhndl);
-	MV1DrawModel(m_Skyhndl);
-
 	switch (m_tagstage)
 	{
 	case CFiled::STAGE1:
 
+		for (int i = 0; i < m_hndl.size(); i++)
+		{
+			if (m_hndl[i] != -1)
+			{
+				MV1DrawModel(m_hndl[i]);
+			}
+		}
+
 		break;
 	}
+
+	MV1DrawModel(m_Skyhndl);
 
 	////当たり判定を目視できるように
 	//DrawSphere3D(GetgoalCenter(), goalradius,
@@ -116,15 +143,18 @@ void  CFiled::Exit()
 	{
 	case CFiled::STAGE1:
 		
+		for (int i = 0; i < m_hndl.size(); i++)
+		{
+			if (m_hndl[i] != -1)
+			{
+				MV1DeleteModel(m_hndl[i]);
+				m_hndl[i] = -1;
+			}
+		}
+
 		break;
 	}
 
-	if (m_fieldhndl != -1)
-	{
-		MV1TerminateCollInfo(m_fieldhndl);
-		MV1DeleteModel(m_fieldhndl);
-		m_fieldhndl = -1;
-	}
 	if (m_Skyhndl != -1)
 	{
 		MV1DeleteModel(m_Skyhndl);
@@ -144,35 +174,38 @@ VECTOR CFiled::FieldHitCheck(VECTOR center, float radius)
 	//当たり判定が格納される構造体
 	MV1_COLL_RESULT_POLY_DIM col;
 
-	//当たり判定を行い、その結果を構造体に格納
-	col = MV1CollCheck_Sphere(m_fieldhndl, -1, center, radius);
-
-	//ヒットしたポリゴンがあれば、フラグをオンに
-	if (col.HitNum != 0)
+	for (int i = 0; i < m_hndl.size(); i++)
 	{
-		//当たった時の処理
-		// 当たったデータをすべてチェックする
-		for (int i = 0; i < col.HitNum; i++)
+		//当たり判定を行い、その結果を構造体に格納
+		col = MV1CollCheck_Sphere(m_hndl[i], -1, center, radius);
+
+		//ヒットしたポリゴンがあれば、フラグをオンに
+		if (col.HitNum != 0)
 		{
-			//まず中心点から最近点を引き算
-			VECTOR v = VSub(center, col.Dim[i].HitPosition);
+			//当たった時の処理
+			// 当たったデータをすべてチェックする
+			for (int j = 0; j < col.HitNum; j++)
+			{
+				//まず中心点から最近点を引き算
+				VECTOR v = VSub(center, col.Dim[j].HitPosition);
 
-			//取得したベクトルを三平方の定理で長さに変換
-			float len = VSize(v);
+				//取得したベクトルを三平方の定理で長さに変換
+				float len = VSize(v);
 
-			//実際にめり込んだ距離を計算
-			len = radius - len;
+				//実際にめり込んだ距離を計算
+				len = radius - len;
 
-			//法線をめり込んだ距離分掛け算する
-			v = VScale(col.Dim[i].Normal, len);
+				//法線をめり込んだ距離分掛け算する
+				v = VScale(col.Dim[j].Normal, len);
 
-			//計算結果を合算していく
-			result = VAdd(result, v);
+				//計算結果を合算していく
+				result = VAdd(result, v);
+			}
 		}
+
+		//終了前にコリジョンデータを破棄
+		MV1CollResultPolyDimTerminate(col);
 	}
-	//終了前にコリジョンデータを破棄
-	MV1CollResultPolyDimTerminate(col);
 
 	return result;
 }
-

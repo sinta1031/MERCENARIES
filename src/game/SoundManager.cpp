@@ -17,6 +17,16 @@ void CSoundManager::Load()
 	const char* filePath[SOUND_NUM] = {
 		"data/sound/TITLE_BGM.mp3",
 		"data/sound/Push_SE.mp3",
+		"data/sound/KNIGHT_theme.mp3",
+		"data/sound/KNIGHT_Mayhem_Mode.mp3",
+		"data/sound/GUNMAN_theme.mp3",
+		"data/sound/GUNMAN_Mayhem_Mode.mp3",
+		"data/sound/FIGHTER_theme.mp3",
+		"data/sound/FIGHTER_Mayhem_Mode.mp3",
+		"data/sound/MILITARY_theme.mp3",
+		"data/sound/MILITARY_Mayhem_Mode.mp3",
+		"data/sound/Mini_Boss_theme.mp3",
+		"data/sound/Mini_Boss_Mayhem_Mode.mp3",
 
 	};
 

@@ -28,7 +28,7 @@ int CPlayScene::Loop()
 	case CPlayScene::PLAY_SCENE_LOAD:
 		Load();
 		// ÉQÅ[ÉÄñ{ï“ÇÃBGMÇñ¬ÇÁÇ∑
-		/*c_SDM.Play(c_SDM.BGM_GAME, DX_PLAYTYPE_LOOP);*/
+		c_SDM.Play(c_SDM.GUNMAN_THEME, DX_PLAYTYPE_LOOP);
 		m_SceneID = PLAY_SCENE_LOOP;
 		break;
 
@@ -38,7 +38,7 @@ int CPlayScene::Loop()
 
 	case CPlayScene::PLAY_SCENE_END:
 		Exit();
-		//c_SDM.AllStop();
+		c_SDM.AllStop();
 		m_SceneID = PLAY_SCENE_INIT;
 		iRet = 1;
 		break;
