@@ -29,6 +29,8 @@ public:
 		UPEERARM_RIGHT,			//右上腕骨
 		LOWERARM_RIGHT,			//右尺骨
 		LOWERARM_RIGHT_END,		//右指骨
+		TARGET_BOON,			//プレイヤーの注視点
+		TARGET_BOON_END,		//プレイヤーの注視点
 		PELBIS_LEFT,			//左骨盤
 		UPPERLEG_LEFT,			//左大腿骨
 		LOWERLEG_LEFT,			//左脛骨

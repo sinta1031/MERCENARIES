@@ -83,23 +83,45 @@ void  CPlayer::Step()
 	Falldetection();
 
 	//ècà⁄ìÆ
-	if (CheckHitKey(KEY_INPUT_W) != 0 || InputPad::GetLAnalogYInput() > 0 || InputPad::IsPushPadRep(XINPUT_BUTTON_DPAD_UP))
+	if (CheckHitKey(KEY_INPUT_W) != 0 || InputPad::IsPushPadRep(XINPUT_BUTTON_DPAD_UP))
 	{
 		speed.z = -PL_SPEED;
 	}
-	if (CheckHitKey(KEY_INPUT_S) != 0 || InputPad::GetLAnalogYInput() < 0 || InputPad::IsPushPadRep(XINPUT_BUTTON_DPAD_DOWN))
+
+	if (InputPad::GetLAnalogYInput() > 0)
+	{
+		speed.z = -InputPad::GetLAnalogYInput();
+	}
+
+	if (CheckHitKey(KEY_INPUT_S) != 0 || InputPad::IsPushPadRep(XINPUT_BUTTON_DPAD_DOWN))
 	{
 		speed.z = PL_SPEED;
 	}
 
+	if (InputPad::GetLAnalogYInput() < 0)
+	{
+		speed.z = -InputPad::GetLAnalogYInput();
+	}
+
 	//â°à⁄ìÆ
-	if (CheckHitKey(KEY_INPUT_A) != 0 || InputPad::GetLAnalogXInput() < 0 || InputPad::IsPushPadRep(XINPUT_BUTTON_DPAD_LEFT))
+	if (CheckHitKey(KEY_INPUT_A) != 0 || InputPad::IsPushPadRep(XINPUT_BUTTON_DPAD_LEFT))
 	{
 		speed.x = PL_SPEED;
 	}
-	if (CheckHitKey(KEY_INPUT_D) != 0 || InputPad::GetLAnalogXInput() > 0 || InputPad::IsPushPadRep(XINPUT_BUTTON_DPAD_RIGHT))
+
+	if (InputPad::GetLAnalogXInput() < 0)
+	{
+		speed.x = -InputPad::GetLAnalogXInput();
+	}
+
+	if (CheckHitKey(KEY_INPUT_D) != 0 || InputPad::IsPushPadRep(XINPUT_BUTTON_DPAD_RIGHT))
 	{
 		speed.x = -PL_SPEED;
+	}
+
+	if (InputPad::GetLAnalogXInput() > 0)
+	{
+		speed.x = -InputPad::GetLAnalogXInput();
 	}
 
 	if (speed.x != 0.0f || speed.z != 0.0f)
@@ -151,7 +173,7 @@ void CPlayer::jump()
 	if (m_gravity == 0.0f)
 	{
 		m_gravity = JUMPPOWER;
-	}	
+	}
 }
 
 //èdóÕ

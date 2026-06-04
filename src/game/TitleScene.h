@@ -9,6 +9,7 @@ using namespace std;
 class CTitleScene {
 private:
 
+	//タイトル画面の画像
 	enum tagTITLE_PICTURE {
 		TITLE_PICTURE,
 		TITLE_UI,
@@ -17,6 +18,7 @@ private:
 		TITLE_PICTURE_NUM,
 	};
 
+	//タイトル画面のフォントの画像
 	enum tagTITLE_FONT {
 		TITLE_FONT_1,
 		TITLE_FONT_2,
@@ -26,6 +28,7 @@ private:
 		TITLE_FONT_NUM,
 	};
 
+	//何を選択しているか
 	enum tagTITLE_MENU {
 		START_GAME,
 		EXIT,

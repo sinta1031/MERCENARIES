@@ -28,7 +28,7 @@ int CPlayScene::Loop()
 	case CPlayScene::PLAY_SCENE_LOAD:
 		Load();
 		// ÉQÅ[ÉÄñ{ï“ÇÃBGMÇñ¬ÇÁÇ∑
-		c_SDM.Play(c_SDM.GUNMAN_THEME, DX_PLAYTYPE_LOOP);
+		c_SDM.Play(c_SDM.KNIGHT_THEME, DX_PLAYTYPE_LOOP);
 		m_SceneID = PLAY_SCENE_LOOP;
 		break;
 
@@ -90,7 +90,7 @@ void CPlayScene::Step()
 {
 	c_PM.SetCameraRot(c_CM.PGetCamareRot());
 	c_PM.Step();
-	c_CM.Step(c_PM.Getplayerinstance().GetFramePos(c_PM.Getplayerinstance().GetHndl(), CPlayer::FrameNamber::CHEST));
+	c_CM.Step(c_PM.Getplayerinstance().GetFramePos(c_PM.Getplayerinstance().GetHndl(), CPlayer::FrameNamber::TARGET_BOON_END));
 	c_F.Step();
 	c_SM.Step();
 

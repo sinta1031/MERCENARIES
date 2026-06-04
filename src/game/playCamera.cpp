@@ -33,6 +33,16 @@ void PlayCamera::Init() {
 }
 //毎フレーム呼び出す処理(ノーマル)
 void PlayCamera::Step(VECTOR _TargetPos) {
+
+	//改良カメラ
+	//===============================================================================
+	//各種定義関連
+	const float MAX_LEN_NEAR = 60.0f;   // この距離より離れるとカメラ移動開始
+	const float MAX_LEN_FAR = 80.0f;    // これ以上離れさせない
+	const float MIN_LEN_NEAR = 40.0f;   // この距離より近づくとカメラ移動開始
+	const float MIN_LEN_FAR = 30.0f;    // これ以上は近づけさせない
+	const float CAM_MOVE_SPEED = 0.5f;  // カメラの移動速度
+
 	m_IsTarget1 = false;
 	m_IsTarget2 = false;
 
@@ -81,6 +91,80 @@ void PlayCamera::Step(VECTOR _TargetPos) {
 		m_CalcRot.x = -UpLimit;
 	}
 
+	//現在のカメラの位置からキャラクターの位置までの方向ベクトルを取得
+	VECTOR dir = VSub(m_CameraPos, m_TargetPoint);
+	dir.y = 0.0f;   //高さを考慮するとややこしいんで、一旦無視
+
+	//今回は長さが重要なので、先ほど計算したベクトルから長さを計算
+	float len = VSize(dir);
+
+	//長さを求めたので、方向ベクトルは正規化してしまう
+	dir = VNorm(dir);
+
+	//カメラとプレイヤーの距離が一定以上離れた
+	if (len > MAX_LEN_NEAR)
+	{
+		//本来の到達地点を計算
+		dir = VScale(dir, MAX_LEN_NEAR);
+		VECTOR tempPos = VAdd(m_TargetPoint, dir);
+
+		//現在のカメラの位置から上記到達地点までの方向ベクトルを計算
+		VECTOR tempDir = VSub(tempPos, m_CameraPos);
+		tempDir.y = 0.0f;             //高さは無視
+		tempDir = VNorm(tempDir);     //方向ベクトルなので正規化
+
+		//目標到達地点に向けて、カメラの座標を移動させる
+		tempDir = VScale(tempDir, CAM_MOVE_SPEED); //カメラの速度を計算
+		m_CameraPos = VAdd(m_CameraPos, tempDir);
+
+		//離れてはいけない距離以上は慣れていた場合の処理===========
+		//新しく計算した位置と、注視点までの距離を計算
+		tempDir = VSub(m_CameraPos, m_TargetPoint);
+		tempDir.y = 0.0f; //やっぱり高さは無視
+
+		//離れてはいけない距離を超えたかチェック(計算量を減らすため、2乗した値で比較)
+		if (VSize(tempDir) > MAX_LEN_FAR)
+		{
+			//再度正規化し、強制的に最大距離に変更
+			tempDir = VNorm(tempDir);
+			tempDir = VScale(tempDir, MAX_LEN_FAR);
+			m_CameraPos = VAdd(m_TargetPoint, tempDir);
+		}
+		//======================================================================
+	}
+	//カメラとプレイヤーの距離が一定以上近づいた
+	else if (len < MIN_LEN_NEAR)
+	{
+		//本来の到達地点を計算
+		dir = VScale(dir, MIN_LEN_NEAR);
+		VECTOR tempPos = VAdd(m_TargetPoint, dir);
+
+		//現在のカメラの位置から上記到達地点までの方向ベクトルを計算
+		VECTOR tempDir = VSub(tempPos, m_CameraPos);
+		tempDir.y = 0.0f;             //高さは無視
+		tempDir = VNorm(tempDir);     //方向ベクトルなので正規化
+
+		//目標到達地点に向けて、カメラの座標を移動させる
+		tempDir = VScale(tempDir, CAM_MOVE_SPEED); //カメラの速度を計算
+		m_CameraPos = VAdd(m_CameraPos, tempDir);
+
+		//離れてはいけない距離以上は慣れていた場合の処理===========
+		//新しく計算した位置と、注視点までの距離を計算
+		tempDir = VSub(m_CameraPos, m_TargetPoint);
+		tempDir.y = 0.0f; //やっぱり高さは無視
+
+		//離れてはいけない距離を超えたかチェック(計算量を減らすため、2乗した値で比較)
+		if (VSize(tempDir) < MIN_LEN_FAR)
+		{
+			//再度正規化し、強制的に最大距離に変更
+			tempDir = VNorm(tempDir);
+			tempDir = VScale(tempDir, MIN_LEN_FAR);
+			m_CameraPos = VAdd(m_TargetPoint, tempDir);
+		}
+		//====================================================================
+	}
+	//============================================================================
+
 	//回転行列作成
 	MATRIX MatRotX = MGetRotX(m_CalcRot.x);
 	MATRIX MatRotY = MGetRotY(m_CalcRot.y);
@@ -90,7 +174,7 @@ void PlayCamera::Step(VECTOR _TargetPos) {
 
 	//相対ベクトル
 	/*m_TargetPoint.y= 25.0f;*/
-	VECTOR OffSet = VGet(0.0f, 35.0f, 100.0f);
+	VECTOR OffSet = VGet(0.0f, 35.0f, 60.0f);
 
 	//カメラ位置
 	VECTOR CameraPosCalc = VTransform(OffSet, MatRot);
