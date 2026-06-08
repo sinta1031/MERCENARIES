@@ -1,7 +1,7 @@
 #pragma once
 #include <DxLib.h>
 #include "ShotManager.h"
-#include "PlayCamera.h"
+//#include "PlayCamera.h"
 
 class CPlayer {
 public:

@@ -128,9 +128,36 @@ void  CPlayer::Step()
 	{
 		// 移動速度で計算する
 		speed = VNorm(speed);
-		MATRIX trans = MGetTranslate(speed);	         // 移動行列
+
+		//チャッピーに聞いたプログラム=================
+		/*VECTOR Forward;
+		Forward.x = sinf(m_CameraRot.y);
+		Forward.y = 0.0f;
+		Forward.z = cosf(m_CameraRot.y);
+
+		VECTOR Right;
+		Right.x = Forward.z;
+		Right.y = 0.0f;
+		Right.z = -Forward.x;
+
+		VECTOR Move = ZERO;
+
+		Move = VAdd(Move, VScale(Forward, -speed.z));
+		Move = VAdd(Move, VScale(Right, speed.x));
+
+		Move = VNorm(Move);
+		Move = VScale(Move, 2.0f);
+
+		m_vPos = VAdd(m_vPos, Move);
+
+		m_vRot.y = atan2f(-Move.x, -Move.z);*/
+		//=============================================
+		
+		//今までのプログラム===========================
+		MATRIX trans = MGetTranslate(speed);	// 移動行列
 		MATRIX rotY = MGetRotY(m_CameraRot.y);	//MGetRotY(GetRotCamera(m_plca.GetCamareRot()));   // 回転行列
 		MATRIX res = MMult(trans, rotY);
+
 		vSpeed.x = res.m[3][0];
 		vSpeed.y = res.m[3][1];
 		vSpeed.z = res.m[3][2];
@@ -156,6 +183,7 @@ void  CPlayer::Step()
 		MV1SetMatrix(m_Hndl1, Temp1);*/
 
 		m_vRot.y = atan2f(-vSpeed.x, -vSpeed.z);
+		//=============================================
 	}
 
 	//スペースキーが押されたらジャンプする

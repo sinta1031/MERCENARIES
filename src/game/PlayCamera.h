@@ -12,6 +12,8 @@ private:
 	VECTOR m_UpVec;			//ƒJƒƒ‰‚Ìã•ûŒü
 	VECTOR m_CameraRot;		//ƒJƒƒ‰‰ñ“]Šp“x
 	VECTOR m_CalcRot;
+	VECTOR m_FocusPos;
+	float m_MoveOffset;
 
 	VECTOR m_CameraPoint;
 	VECTOR m_TargetPoint;

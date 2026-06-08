@@ -55,6 +55,7 @@ void CPlayScene::Draw()
 	c_EM.Draw();
 	c_PM.Draw();
 	c_SM.Draw();
+	c_CM.Draw();
 }
 
 //èâä˙âª
@@ -90,7 +91,7 @@ void CPlayScene::Step()
 {
 	c_PM.SetCameraRot(c_CM.PGetCamareRot());
 	c_PM.Step();
-	c_CM.Step(c_PM.Getplayerinstance().GetFramePos(c_PM.Getplayerinstance().GetHndl(), CPlayer::FrameNamber::TARGET_BOON_END));
+	c_CM.Step(c_PM.Getplayerinstance().GetFramePos(c_PM.Getplayerinstance().GetHndl(), CPlayer::FrameNamber::HEAD));
 	c_F.Step();
 	c_SM.Step();
 

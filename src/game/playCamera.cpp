@@ -4,9 +4,11 @@ namespace {
 	const float PLAYCAMERA_BACKPOS = 100.0f;
 	const float PLAYCAMERA_POSY = 30.0f;
 	const float TARGET_POS = 50.0f;
+	const float FLOAT_ZERO = 0.0f;
 	const VECTOR UP_VEC = { 0.0f,10.0f,0.0f };
 	const VECTOR VZERO = { 0.0f,0.0f,0.0f };
 	const float CALC_LEN = 5.0f;
+	const float DEAD_ZONE = 15.0f;
 }
 
 //コンストラクタ
@@ -22,6 +24,8 @@ void PlayCamera::Init() {
 	m_UpVec = UP_VEC;			//？？？
 	m_CameraRot = VZERO;
 	m_CalcRot = VZERO;
+	m_FocusPos = VZERO;
+	m_MoveOffset = FLOAT_ZERO;
 	m_IsTarget1 = false;
 	m_IsTarget2 = false;
 	m_IsFree1 = false;
@@ -34,19 +38,35 @@ void PlayCamera::Init() {
 //毎フレーム呼び出す処理(ノーマル)
 void PlayCamera::Step(VECTOR _TargetPos) {
 
-	//改良カメラ
-	//===============================================================================
-	//各種定義関連
-	const float MAX_LEN_NEAR = 60.0f;   // この距離より離れるとカメラ移動開始
-	const float MAX_LEN_FAR = 80.0f;    // これ以上離れさせない
-	const float MIN_LEN_NEAR = 40.0f;   // この距離より近づくとカメラ移動開始
-	const float MIN_LEN_FAR = 30.0f;    // これ以上は近づけさせない
-	const float CAM_MOVE_SPEED = 0.5f;  // カメラの移動速度
-
 	m_IsTarget1 = false;
 	m_IsTarget2 = false;
 
-	m_TargetPoint = _TargetPos;
+	//チャッピーに消せと...
+	//m_TargetPoint = _TargetPos;
+	
+	//デットゾーンを追加
+	if (m_FocusPos.x == 0.0f &&
+		m_FocusPos.y == 0.0f &&
+		m_FocusPos.z == 0.0f)
+	{
+		m_FocusPos = _TargetPos;
+	}
+
+	VECTOR diff = VSub(_TargetPos, m_FocusPos);
+
+	float len = VSize(diff);
+
+	if (len > DEAD_ZONE)
+	{
+		VECTOR dir = VNorm(diff);
+
+		float over = len - DEAD_ZONE;
+
+		m_FocusPos = VAdd(m_FocusPos, VScale(dir, over * 0.25f));
+	}
+
+	m_TargetPoint = m_FocusPos;
+
 	float RotSpeed = 0.05f;
 	float RotX = 0.0f;
 	float RotY = 0.0f;
@@ -91,80 +111,6 @@ void PlayCamera::Step(VECTOR _TargetPos) {
 		m_CalcRot.x = -UpLimit;
 	}
 
-	//現在のカメラの位置からキャラクターの位置までの方向ベクトルを取得
-	VECTOR dir = VSub(m_CameraPos, m_TargetPoint);
-	dir.y = 0.0f;   //高さを考慮するとややこしいんで、一旦無視
-
-	//今回は長さが重要なので、先ほど計算したベクトルから長さを計算
-	float len = VSize(dir);
-
-	//長さを求めたので、方向ベクトルは正規化してしまう
-	dir = VNorm(dir);
-
-	//カメラとプレイヤーの距離が一定以上離れた
-	if (len > MAX_LEN_NEAR)
-	{
-		//本来の到達地点を計算
-		dir = VScale(dir, MAX_LEN_NEAR);
-		VECTOR tempPos = VAdd(m_TargetPoint, dir);
-
-		//現在のカメラの位置から上記到達地点までの方向ベクトルを計算
-		VECTOR tempDir = VSub(tempPos, m_CameraPos);
-		tempDir.y = 0.0f;             //高さは無視
-		tempDir = VNorm(tempDir);     //方向ベクトルなので正規化
-
-		//目標到達地点に向けて、カメラの座標を移動させる
-		tempDir = VScale(tempDir, CAM_MOVE_SPEED); //カメラの速度を計算
-		m_CameraPos = VAdd(m_CameraPos, tempDir);
-
-		//離れてはいけない距離以上は慣れていた場合の処理===========
-		//新しく計算した位置と、注視点までの距離を計算
-		tempDir = VSub(m_CameraPos, m_TargetPoint);
-		tempDir.y = 0.0f; //やっぱり高さは無視
-
-		//離れてはいけない距離を超えたかチェック(計算量を減らすため、2乗した値で比較)
-		if (VSize(tempDir) > MAX_LEN_FAR)
-		{
-			//再度正規化し、強制的に最大距離に変更
-			tempDir = VNorm(tempDir);
-			tempDir = VScale(tempDir, MAX_LEN_FAR);
-			m_CameraPos = VAdd(m_TargetPoint, tempDir);
-		}
-		//======================================================================
-	}
-	//カメラとプレイヤーの距離が一定以上近づいた
-	else if (len < MIN_LEN_NEAR)
-	{
-		//本来の到達地点を計算
-		dir = VScale(dir, MIN_LEN_NEAR);
-		VECTOR tempPos = VAdd(m_TargetPoint, dir);
-
-		//現在のカメラの位置から上記到達地点までの方向ベクトルを計算
-		VECTOR tempDir = VSub(tempPos, m_CameraPos);
-		tempDir.y = 0.0f;             //高さは無視
-		tempDir = VNorm(tempDir);     //方向ベクトルなので正規化
-
-		//目標到達地点に向けて、カメラの座標を移動させる
-		tempDir = VScale(tempDir, CAM_MOVE_SPEED); //カメラの速度を計算
-		m_CameraPos = VAdd(m_CameraPos, tempDir);
-
-		//離れてはいけない距離以上は慣れていた場合の処理===========
-		//新しく計算した位置と、注視点までの距離を計算
-		tempDir = VSub(m_CameraPos, m_TargetPoint);
-		tempDir.y = 0.0f; //やっぱり高さは無視
-
-		//離れてはいけない距離を超えたかチェック(計算量を減らすため、2乗した値で比較)
-		if (VSize(tempDir) < MIN_LEN_FAR)
-		{
-			//再度正規化し、強制的に最大距離に変更
-			tempDir = VNorm(tempDir);
-			tempDir = VScale(tempDir, MIN_LEN_FAR);
-			m_CameraPos = VAdd(m_TargetPoint, tempDir);
-		}
-		//====================================================================
-	}
-	//============================================================================
-
 	//回転行列作成
 	MATRIX MatRotX = MGetRotX(m_CalcRot.x);
 	MATRIX MatRotY = MGetRotY(m_CalcRot.y);
@@ -181,8 +127,38 @@ void PlayCamera::Step(VECTOR _TargetPos) {
 	m_CameraPoint = VAdd(m_TargetPoint, CameraPosCalc);
 	/*m_CameraPoint.y = 50.0f;*/
 
-	/*m_TargetPos = m_TargetPoint;
-	m_CameraPos = m_CameraPoint;*/
+	VECTOR Right = VTransform(VGet(1.0f, 0.0f, 0.0f), MatRot);
+
+	//注視点をずらす
+	float TargetOffset = 0.0f;
+
+	// 左スティック右
+	if (InputPad::GetLAnalogXInput() > 0.3f)
+	{
+		TargetOffset = -15.0f;
+	}
+	// 左スティック左
+	else if (InputPad::GetLAnalogXInput() < -0.3f)
+	{
+		TargetOffset = 15.0f;
+	}
+
+	// キーボード
+	if (Input::IsInputRep(KEY_INPUT_D))
+	{
+		TargetOffset = -15.0f;
+	}
+	else if (Input::IsInputRep(KEY_INPUT_A))
+	{
+		TargetOffset = 15.0f;
+	}
+
+	m_MoveOffset += (TargetOffset - m_MoveOffset) * 0.1f;
+
+	m_TargetPos = VAdd(m_TargetPoint, VScale(Right, -20.0f + m_MoveOffset));
+
+	//m_TargetPos = VAdd(m_TargetPoint, VScale(Right, -20.0f));
+
 	m_CameraRot.y = m_CalcRot.y;
 
 	if (!m_IsFree1 || !m_IsFree2) {
@@ -191,6 +167,7 @@ void PlayCamera::Step(VECTOR _TargetPos) {
 		if (f1 > CALC_LEN) {
 			v1 = VNorm(v1);
 			v1 = VScale(v1, 5.0f);
+
 			m_CameraPos = VAdd(m_CameraPos, v1);
 		}
 		else {
@@ -203,6 +180,7 @@ void PlayCamera::Step(VECTOR _TargetPos) {
 		if (f2 > CALC_LEN) {
 			v2 = VNorm(v2);
 			v2 = VScale(v2, 5.0f);
+
 			m_TargetPos = VAdd(m_TargetPos, v2);
 		}
 		else {
@@ -319,4 +297,8 @@ void PlayCamera::Draw() {
 	DrawFormatString(50, 400, GetColor(255, 255, 0), "注視点座標X:%f", m_TargetPos.x);
 	DrawFormatString(50, 425, GetColor(255, 255, 0), "注視点座標Y:%f", m_TargetPos.y);
 	DrawFormatString(50, 450, GetColor(255, 255, 0), "注視点座標Z:%f", m_TargetPos.z);
+
+	DrawFormatString(50, 500, GetColor(255, 255, 0), "フォーカス点座標X:%f", m_FocusPos.x);
+	DrawFormatString(50, 525, GetColor(255, 255, 0), "フォーカス点座標Y:%f", m_FocusPos.y);
+	DrawFormatString(50, 550, GetColor(255, 255, 0), "フォーカス点座標Z:%f", m_FocusPos.z);
 }

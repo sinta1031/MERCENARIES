@@ -59,15 +59,10 @@ void CCameraManager::Update()
 	}	
 }
 
-//-------------------------
-// イベントカメラ
-//-------------------------
-void CCameraManager::EventCamera(VECTOR focus)
+//-----------------------------
+//デバック用
+//-----------------------------
+void CCameraManager::Draw()
 {
-	switch (m_id)
-	{
-	case ID_DEBUG:
-		m_debug.EventCamera(focus);
-		break;
-	}
+	m_play.Draw();
 }

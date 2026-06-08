@@ -36,6 +36,9 @@ public:
 	// カメラの更新
 	void Update();
 
+	//デバック用
+	void Draw();
+
 	// カメラのイベント
 	void EventCamera(VECTOR focus);
 
