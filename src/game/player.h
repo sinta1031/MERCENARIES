@@ -45,6 +45,7 @@ private:
 	
 		VECTOR m_vPos;               // 座標
 		VECTOR m_vRot;               // 回転速度
+		VECTOR m_vSpeed;               // 移動速度
 		float m_gravity;             // 重力
 		tagPlayerState m_eState;     // プレイヤーの状態
 		int m_PosX;                  // 画面の座標X
@@ -103,6 +104,9 @@ public:
 
 	//モデルハンドル取得
 	int GetHndl() { return m_Hndl; }
+
+	//プレイヤーの移動速度取得
+	VECTOR GetSpeed() { return m_vSpeed; }
 
 	//生存情報取得
 	bool IsActive() { return m_isActive; }

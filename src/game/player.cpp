@@ -29,6 +29,7 @@ void CPlayer::Init()
 {
 	m_vPos = INITPOS;
 	m_vRot = ZERO;
+	m_vSpeed = ZERO;
 	m_gravity = 0.0f;
 	m_eState = PLAYER_STATE_NORMAL;
 	m_radius = 8.0f;
@@ -77,7 +78,6 @@ void  CPlayer::Step()
 	float tempRotY = 180.0f * DX_PI_F / 180.0f;
 	float PL_SPEED = 1.0f;
 	VECTOR speed = ZERO;        // 移動速度
-	VECTOR vSpeed;              // 移動速度
 
 	//落下判定
 	Falldetection();
@@ -158,11 +158,11 @@ void  CPlayer::Step()
 		MATRIX rotY = MGetRotY(m_CameraRot.y);	//MGetRotY(GetRotCamera(m_plca.GetCamareRot()));   // 回転行列
 		MATRIX res = MMult(trans, rotY);
 
-		vSpeed.x = res.m[3][0];
-		vSpeed.y = res.m[3][1];
-		vSpeed.z = res.m[3][2];
+		m_vSpeed.x = res.m[3][0];
+		m_vSpeed.y = res.m[3][1];
+		m_vSpeed.z = res.m[3][2];
 
-		vSpeed = VScale(vSpeed, 2.0f);
+		m_vSpeed = VScale(m_vSpeed, 2.0f);
 
 		/*vSpeed.x = sinf(tempRotY);
 		vSpeed.y = 0.0f;
@@ -174,7 +174,7 @@ void  CPlayer::Step()
 		vSpeed.z = cosf(tempRotY) * speed.z;*/
 
 		// 計算した速度を座標計算に足し算する
-		m_vPos = VAdd(m_vPos, vSpeed);
+		m_vPos = VAdd(m_vPos, m_vSpeed);
 
 		/*MATRIX Temp1, Temp2;
 		Temp1 = MV1GetFrameLocalWorldMatrix(m_Hndl, 2);
@@ -182,7 +182,7 @@ void  CPlayer::Step()
 		Temp1 = MMult(Temp2, Temp1);
 		MV1SetMatrix(m_Hndl1, Temp1);*/
 
-		m_vRot.y = atan2f(-vSpeed.x, -vSpeed.z);
+		m_vRot.y = atan2f(-m_vSpeed.x, -m_vSpeed.z);
 		//=============================================
 	}
 

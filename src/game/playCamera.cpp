@@ -25,7 +25,7 @@ void PlayCamera::Init() {
 	m_CameraRot = VZERO;
 	m_CalcRot = VZERO;
 	m_FocusPos = VZERO;
-	m_MoveOffset = FLOAT_ZERO;
+	m_MoveYam = FLOAT_ZERO;
 	m_IsTarget1 = false;
 	m_IsTarget2 = false;
 	m_IsFree1 = false;
@@ -36,7 +36,7 @@ void PlayCamera::Init() {
 	//m_CameraPos = { -0.5f,25.0f,52.5f };
 }
 //毎フレーム呼び出す処理(ノーマル)
-void PlayCamera::Step(VECTOR _TargetPos) {
+void PlayCamera::Step(VECTOR _TargetPos, VECTOR _PlayerSpeed) {
 
 	m_IsTarget1 = false;
 	m_IsTarget2 = false;
@@ -102,6 +102,24 @@ void PlayCamera::Step(VECTOR _TargetPos) {
 	m_CalcRot.x += RotX;
 	m_CalcRot.y += RotY;
 
+	//注視点をずらす
+	float TargetYam = 0.0f;
+
+	//プレイヤーが左右に動くと左右に寄せる
+	TargetYam = _PlayerSpeed.x * 0.15f;
+
+	if (TargetYam > 0.3f)
+	{
+		TargetYam = 0.3f;
+	}
+	else if (TargetYam < -0.3f)
+	{
+		TargetYam = -0.3f;
+	}
+
+	//なめらかに追従
+	m_MoveYam += (TargetYam - m_MoveYam) * 0.08f;
+
 	float DownLimit = DX_PI_F * 15.0f / 180.0f;
 	float UpLimit = DX_PI_F * 20.0f / 180.0f;
 	if (m_CalcRot.x > DownLimit) {
@@ -113,7 +131,7 @@ void PlayCamera::Step(VECTOR _TargetPos) {
 
 	//回転行列作成
 	MATRIX MatRotX = MGetRotX(m_CalcRot.x);
-	MATRIX MatRotY = MGetRotY(m_CalcRot.y);
+	MATRIX MatRotY = MGetRotY(m_CalcRot.y + m_MoveYam);
 
 	//合成(Y→X)
 	MATRIX MatRot = MMult(MatRotX, MatRotY);
@@ -129,35 +147,7 @@ void PlayCamera::Step(VECTOR _TargetPos) {
 
 	VECTOR Right = VTransform(VGet(1.0f, 0.0f, 0.0f), MatRot);
 
-	//注視点をずらす
-	float TargetOffset = 0.0f;
-
-	// 左スティック右
-	if (InputPad::GetLAnalogXInput() > 0.3f)
-	{
-		TargetOffset = -15.0f;
-	}
-	// 左スティック左
-	else if (InputPad::GetLAnalogXInput() < -0.3f)
-	{
-		TargetOffset = 15.0f;
-	}
-
-	// キーボード
-	if (Input::IsInputRep(KEY_INPUT_D))
-	{
-		TargetOffset = -15.0f;
-	}
-	else if (Input::IsInputRep(KEY_INPUT_A))
-	{
-		TargetOffset = 15.0f;
-	}
-
-	m_MoveOffset += (TargetOffset - m_MoveOffset) * 0.1f;
-
-	m_TargetPos = VAdd(m_TargetPoint, VScale(Right, -20.0f + m_MoveOffset));
-
-	//m_TargetPos = VAdd(m_TargetPoint, VScale(Right, -20.0f));
+	m_TargetPos = VAdd(m_TargetPoint, VScale(Right, -20.0f));
 
 	m_CameraRot.y = m_CalcRot.y;
 

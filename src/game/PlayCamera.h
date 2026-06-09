@@ -13,7 +13,7 @@ private:
 	VECTOR m_CameraRot;		//カメラ回転角度
 	VECTOR m_CalcRot;
 	VECTOR m_FocusPos;
-	float m_MoveOffset;
+	float  m_MoveYam;
 
 	VECTOR m_CameraPoint;
 	VECTOR m_TargetPoint;
@@ -32,7 +32,7 @@ public:
 	void Init();
 
 	//毎フレーム呼び出す処理(ノーマル)
-	void Step(VECTOR _TargetPos);
+	void Step(VECTOR _TargetPos, VECTOR _PlayerSpeed);
 
 	//毎フレーム呼び出す処理(ロックオン)
 	void Step(VECTOR _TargetPos,VECTOR _PlayerPos,bool _IsSPAtk);

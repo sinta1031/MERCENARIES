@@ -31,7 +31,7 @@ public:
 	// カメラの座標計算
 	// @focus :  プレイヤーの座標
 	// @rotY  :  プレイヤーの角度
-	void Step(VECTOR focus1);
+	void Step(VECTOR focus1,VECTOR focus2);
 
 	// カメラの更新
 	void Update();
