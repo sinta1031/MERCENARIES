@@ -13,6 +13,7 @@ private:
 	VECTOR m_CameraRot;		//ƒJƒƒ‰‰ñ“]Šp“x
 	VECTOR m_CalcRot;
 	VECTOR m_FocusPos;
+	VECTOR m_CamRight;
 	float  m_MoveYam;
 
 	VECTOR m_CameraPoint;

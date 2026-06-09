@@ -78,6 +78,7 @@ void  CPlayer::Step()
 	float tempRotY = 180.0f * DX_PI_F / 180.0f;
 	float PL_SPEED = 1.0f;
 	VECTOR speed = ZERO;        // ˆÚ“®‘¬“x
+	m_vSpeed = ZERO;
 
 	//—Ž‰º”»’è
 	Falldetection();

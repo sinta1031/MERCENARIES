@@ -25,6 +25,7 @@ void PlayCamera::Init() {
 	m_CameraRot = VZERO;
 	m_CalcRot = VZERO;
 	m_FocusPos = VZERO;
+	m_CamRight = VZERO;
 	m_MoveYam = FLOAT_ZERO;
 	m_IsTarget1 = false;
 	m_IsTarget2 = false;
@@ -102,22 +103,25 @@ void PlayCamera::Step(VECTOR _TargetPos, VECTOR _PlayerSpeed) {
 	m_CalcRot.x += RotX;
 	m_CalcRot.y += RotY;
 
-	//注視点をずらす
-	float TargetYam = 0.0f;
+	//カメラの右方向ベクトル
+	m_CamRight.x = cosf(m_CalcRot.y);
+	m_CamRight.y = 0.0f;
+	m_CamRight.z = -sinf(m_CalcRot.y);
 
-	//プレイヤーが左右に動くと左右に寄せる
-	TargetYam = _PlayerSpeed.x * 0.15f;
+	//プレイヤー速度をカメラ基準に変換。
+	float SideMove = VDot(_PlayerSpeed, m_CamRight);
 
-	if (TargetYam > 0.3f)
+	float TargetYam = SideMove * 0.15f;
+
+	if (TargetYam > 0.30f)
 	{
-		TargetYam = 0.3f;
+		TargetYam = 0.30f;
 	}
-	else if (TargetYam < -0.3f)
+	else if (TargetYam < -0.30f)
 	{
-		TargetYam = -0.3f;
+		TargetYam = -0.30f;
 	}
 
-	//なめらかに追従
 	m_MoveYam += (TargetYam - m_MoveYam) * 0.08f;
 
 	float DownLimit = DX_PI_F * 15.0f / 180.0f;
@@ -131,7 +135,7 @@ void PlayCamera::Step(VECTOR _TargetPos, VECTOR _PlayerSpeed) {
 
 	//回転行列作成
 	MATRIX MatRotX = MGetRotX(m_CalcRot.x);
-	MATRIX MatRotY = MGetRotY(m_CalcRot.y + m_MoveYam);
+	MATRIX MatRotY = MGetRotY(m_CalcRot.y);
 
 	//合成(Y→X)
 	MATRIX MatRot = MMult(MatRotX, MatRotY);
@@ -147,7 +151,7 @@ void PlayCamera::Step(VECTOR _TargetPos, VECTOR _PlayerSpeed) {
 
 	VECTOR Right = VTransform(VGet(1.0f, 0.0f, 0.0f), MatRot);
 
-	m_TargetPos = VAdd(m_TargetPoint, VScale(Right, -20.0f));
+	m_TargetPos = VAdd(m_TargetPoint, VScale(Right, -20.0f + m_MoveYam * 40.0f));
 
 	m_CameraRot.y = m_CalcRot.y;
 
@@ -291,4 +295,6 @@ void PlayCamera::Draw() {
 	DrawFormatString(50, 500, GetColor(255, 255, 0), "フォーカス点座標X:%f", m_FocusPos.x);
 	DrawFormatString(50, 525, GetColor(255, 255, 0), "フォーカス点座標Y:%f", m_FocusPos.y);
 	DrawFormatString(50, 550, GetColor(255, 255, 0), "フォーカス点座標Z:%f", m_FocusPos.z);
+
+	
 }
