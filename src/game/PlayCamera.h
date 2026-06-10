@@ -15,6 +15,7 @@ private:
 	VECTOR m_FocusPos;
 	VECTOR m_CamRight;
 	float  m_MoveYam;
+	float  m_ADSRate;		//ADSÉJÉÅÉâ
 
 	VECTOR m_CameraPoint;
 	VECTOR m_TargetPoint;

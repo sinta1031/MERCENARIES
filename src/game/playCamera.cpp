@@ -27,6 +27,7 @@ void PlayCamera::Init() {
 	m_FocusPos = VZERO;
 	m_CamRight = VZERO;
 	m_MoveYam = FLOAT_ZERO;
+	m_ADSRate = FLOAT_ZERO;
 	m_IsTarget1 = false;
 	m_IsTarget2 = false;
 	m_IsFree1 = false;
@@ -41,6 +42,23 @@ void PlayCamera::Step(VECTOR _TargetPos, VECTOR _PlayerSpeed) {
 
 	m_IsTarget1 = false;
 	m_IsTarget2 = false;
+
+	bool IsADS = false;
+
+	if (Input::IsInputRep(KEY_INPUT_LCONTROL) || InputPad::GetLTriggerInputRep())
+	{
+		IsADS = true;
+	}
+
+	//ADSの処理
+	float TargetADS = 0.0f;
+
+	if (IsADS)
+	{
+		TargetADS = 1.0f;
+	}
+
+	m_ADSRate += (TargetADS - m_ADSRate) * 0.1f;
 
 	//チャッピーに消せと...
 	//m_TargetPoint = _TargetPos;
@@ -103,26 +121,30 @@ void PlayCamera::Step(VECTOR _TargetPos, VECTOR _PlayerSpeed) {
 	m_CalcRot.x += RotX;
 	m_CalcRot.y += RotY;
 
-	//カメラの右方向ベクトル
-	m_CamRight.x = cosf(m_CalcRot.y);
-	m_CamRight.y = 0.0f;
-	m_CamRight.z = -sinf(m_CalcRot.y);
+	//カメラ右方向
+	VECTOR CamRight;
+	CamRight.x = cosf(m_CalcRot.y);
+	CamRight.y = 0.0f;
+	CamRight.z = -sinf(m_CalcRot.y);
 
-	//プレイヤー速度をカメラ基準に変換。
-	float SideMove = VDot(_PlayerSpeed, m_CamRight);
+	//プレイヤーがカメラ基準でどれだけ移動したか
+	float SideMove = VDot(_PlayerSpeed, CamRight);
+	
+	//自動回転量
+	float AutoRot = -SideMove * 0.015f;
 
-	float TargetYam = SideMove * 0.15f;
-
-	if (TargetYam > 0.30f)
+	//制限
+	if (AutoRot > 0.02f)
 	{
-		TargetYam = 0.30f;
+		AutoRot = 0.02f;
 	}
-	else if (TargetYam < -0.30f)
+	else if (AutoRot < -0.02f)
 	{
-		TargetYam = -0.30f;
+		AutoRot = -0.02f;
 	}
 
-	m_MoveYam += (TargetYam - m_MoveYam) * 0.08f;
+	//右スティックを少し倒したように回転
+	m_CalcRot.y += AutoRot;
 
 	float DownLimit = DX_PI_F * 15.0f / 180.0f;
 	float UpLimit = DX_PI_F * 20.0f / 180.0f;
@@ -140,9 +162,24 @@ void PlayCamera::Step(VECTOR _TargetPos, VECTOR _PlayerSpeed) {
 	//合成(Y→X)
 	MATRIX MatRot = MMult(MatRotX, MatRotY);
 
+	//カメラ前方向
+	VECTOR Forward;
+	Forward.x = -sinf(m_CalcRot.y);
+	Forward.y = sinf(m_CalcRot.x);
+	Forward.z = -cosf(m_CalcRot.y);
+	Forward = VNorm(Forward);
+
 	//相対ベクトル
 	/*m_TargetPoint.y= 25.0f;*/
-	VECTOR OffSet = VGet(0.0f, 35.0f, 60.0f);
+	VECTOR NormalOffSet = VGet(0.0f, 35.0f, 60.0f);
+	
+	//ADSベクトル
+	VECTOR ADSOffset = VGet(-15.0f, 10.0f, 20.0f);
+
+	VECTOR OffSet;
+	OffSet.x = NormalOffSet.x + (ADSOffset.x - NormalOffSet.x) * m_ADSRate;
+	OffSet.y = NormalOffSet.y + (ADSOffset.y - NormalOffSet.y) * m_ADSRate;
+	OffSet.z = NormalOffSet.z + (ADSOffset.z - NormalOffSet.z) * m_ADSRate;
 
 	//カメラ位置
 	VECTOR CameraPosCalc = VTransform(OffSet, MatRot);
@@ -151,7 +188,15 @@ void PlayCamera::Step(VECTOR _TargetPos, VECTOR _PlayerSpeed) {
 
 	VECTOR Right = VTransform(VGet(1.0f, 0.0f, 0.0f), MatRot);
 
-	m_TargetPos = VAdd(m_TargetPoint, VScale(Right, -20.0f + m_MoveYam * 40.0f));
+	//通常時の注視点
+	VECTOR NormalTarget = VAdd(m_TargetPoint, VScale(Right, -20.0f));
+
+	//ADSの注視点
+	VECTOR ADSTarget = VAdd(m_TargetPoint, VScale(Forward, 100.0f));
+
+	m_TargetPos.x = NormalTarget.x + (ADSTarget.x - NormalTarget.x) * m_ADSRate;
+	m_TargetPos.y = NormalTarget.y + (ADSTarget.y - NormalTarget.y) * m_ADSRate;
+	m_TargetPos.z = NormalTarget.z + (ADSTarget.z - NormalTarget.z) * m_ADSRate;
 
 	m_CameraRot.y = m_CalcRot.y;
 
@@ -272,6 +317,8 @@ void PlayCamera::Update() {
 	/*SoundUpVecY = VGet(FZERO,FZERO,-1.0f);*/
 	SoundUpVecY = VAdd(m_TargetPos, SoundUpVecY);
 	Set3DSoundListenerPosAndFrontPos_UpVecY(m_TargetPos, SoundUpVecY);
+	float Fov = (DX_PI_F / 3.0f) - (DX_PI_F / 10) * m_ADSRate;
+	SetupCamera_Perspective(Fov);
 	//SetCameraPositionAndAngle(m_CameraPos,m_CameraRot.x, m_CameraRot.y, m_CameraRot.z);
 }
 //デバック用

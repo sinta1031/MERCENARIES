@@ -113,7 +113,7 @@ float InputPad::GetRAnalogYInput(unsigned int _Num) {
 
 //左トリガーの入力(リピート)
 bool InputPad::GetLTriggerInputRep(unsigned int _Num) {
-	if (((float)m_NowInput[_Num].LeftTrigger / (float)TRIGGER_MAX)>0) {
+	if (((float)m_NowInput[_Num].LeftTrigger / (float)TRIGGER_MAX)>0.2f) {
 		return true;
 	}
 	else {
