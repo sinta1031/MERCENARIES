@@ -14,6 +14,9 @@ private:
 	VECTOR m_CalcRot;
 	VECTOR m_FocusPos;
 	VECTOR m_CamRight;
+	VECTOR m_TargetLookPos;
+	VECTOR m_Forward;
+	VECTOR m_ADSTarget;		//ADSÇÃíçéãì_
 	float  m_MoveYam;
 	float  m_ADSRate;		//ADSÉJÉÅÉâ
 

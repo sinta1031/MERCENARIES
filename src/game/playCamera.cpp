@@ -26,6 +26,9 @@ void PlayCamera::Init() {
 	m_CalcRot = VZERO;
 	m_FocusPos = VZERO;
 	m_CamRight = VZERO;
+	m_TargetLookPos = VZERO;
+	m_Forward = VZERO;
+	m_ADSTarget = VZERO;
 	m_MoveYam = FLOAT_ZERO;
 	m_ADSRate = FLOAT_ZERO;
 	m_IsTarget1 = false;
@@ -163,15 +166,12 @@ void PlayCamera::Step(VECTOR _TargetPos, VECTOR _PlayerSpeed) {
 	MATRIX MatRot = MMult(MatRotX, MatRotY);
 
 	//カメラ前方向
-	VECTOR Forward;
-	Forward.x = -sinf(m_CalcRot.y);
-	Forward.y = sinf(m_CalcRot.x);
-	Forward.z = -cosf(m_CalcRot.y);
-	Forward = VNorm(Forward);
+	m_Forward = VTransform(VGet(0.0f, 0.0f, -1.0f), MatRot);
+	m_Forward = VNorm(m_Forward);
 
 	//相対ベクトル
 	/*m_TargetPoint.y= 25.0f;*/
-	VECTOR NormalOffSet = VGet(0.0f, 35.0f, 60.0f);
+	VECTOR NormalOffSet = VGet(0.0f, 0.0f, 60.0f);
 	
 	//ADSベクトル
 	VECTOR ADSOffset = VGet(-15.0f, 10.0f, 20.0f);
@@ -191,12 +191,17 @@ void PlayCamera::Step(VECTOR _TargetPos, VECTOR _PlayerSpeed) {
 	//通常時の注視点
 	VECTOR NormalTarget = VAdd(m_TargetPoint, VScale(Right, -20.0f));
 
-	//ADSの注視点
-	VECTOR ADSTarget = VAdd(m_TargetPoint, VScale(Forward, 100.0f));
+	//ADS用の基準位置
+	VECTOR AimOrigin = m_TargetPoint;
+	AimOrigin.y -= 15.0f;
 
-	m_TargetPos.x = NormalTarget.x + (ADSTarget.x - NormalTarget.x) * m_ADSRate;
-	m_TargetPos.y = NormalTarget.y + (ADSTarget.y - NormalTarget.y) * m_ADSRate;
-	m_TargetPos.z = NormalTarget.z + (ADSTarget.z - NormalTarget.z) * m_ADSRate;
+	//ADSの注視点
+	m_ADSTarget = VAdd(AimOrigin, VScale(m_Forward, 1000.0f));
+
+	//ADSの計算
+	m_TargetLookPos.x = NormalTarget.x + (m_ADSTarget.x - NormalTarget.x) * m_ADSRate;
+	m_TargetLookPos.y = NormalTarget.y + (m_ADSTarget.y - NormalTarget.y) * m_ADSRate;
+	m_TargetLookPos.z = NormalTarget.z + (m_ADSTarget.z - NormalTarget.z) * m_ADSRate;
 
 	m_CameraRot.y = m_CalcRot.y;
 
@@ -214,7 +219,7 @@ void PlayCamera::Step(VECTOR _TargetPos, VECTOR _PlayerSpeed) {
 			m_IsFree1 = true;
 		}
 
-		VECTOR v2 = VSub(m_TargetPoint, m_TargetPos);
+		VECTOR v2 = VSub(m_TargetLookPos, m_TargetPos);
 		float f2 = VSize(v2);
 		if (f2 > CALC_LEN) {
 			v2 = VNorm(v2);
@@ -223,15 +228,16 @@ void PlayCamera::Step(VECTOR _TargetPos, VECTOR _PlayerSpeed) {
 			m_TargetPos = VAdd(m_TargetPos, v2);
 		}
 		else {
-			m_TargetPos = m_TargetPoint;
+			m_TargetPos = m_TargetLookPos;
 			m_IsFree2 = true;
 		}
 	}
 	else {
 		m_CameraPos = m_CameraPoint;
-		m_TargetPos = m_TargetPoint;
+		m_TargetPos = m_TargetLookPos;
 	}
 }
+
 //ロックオン
 void PlayCamera::Step(VECTOR _TargetPos, VECTOR _PlayerPos, bool _IsSPAtk) {
 	m_IsFree1 = false;
@@ -339,9 +345,12 @@ void PlayCamera::Draw() {
 	DrawFormatString(50, 425, GetColor(255, 255, 0), "注視点座標Y:%f", m_TargetPos.y);
 	DrawFormatString(50, 450, GetColor(255, 255, 0), "注視点座標Z:%f", m_TargetPos.z);
 
-	DrawFormatString(50, 500, GetColor(255, 255, 0), "フォーカス点座標X:%f", m_FocusPos.x);
-	DrawFormatString(50, 525, GetColor(255, 255, 0), "フォーカス点座標Y:%f", m_FocusPos.y);
-	DrawFormatString(50, 550, GetColor(255, 255, 0), "フォーカス点座標Z:%f", m_FocusPos.z);
+	DrawFormatString(50, 500, GetColor(255, 255, 0), "m_Forward.Y:%f", m_Forward.y);
+	DrawFormatString(50, 525, GetColor(255, 255, 0), "m_ADSRate:%f", m_ADSRate);
+	DrawSphere3D(m_ADSTarget, 5.0f, 8, GetColor(255, 0, 0), GetColor(255, 0, 0), TRUE);
 
-	
+	DrawFormatString(50, 575, GetColor(255, 255, 0), "カメラの回転座標X:%f", m_CalcRot.x * 180.0f / DX_PI_F);
+	DrawFormatString(50, 600, GetColor(255, 255, 0), "カメラの回転座標Y:%f", m_CalcRot.y * 180.0f / DX_PI_F);
+	DrawFormatString(50, 625, GetColor(255, 255, 0), "CameraY - TargetY = :%f", m_CameraPos.y - m_TargetPoint.y);
+
 }
