@@ -54,6 +54,7 @@ private:
 		int m_Hndl;                  // モデルハンドル
 		bool m_isActive;             // 生存フラグ
 		VECTOR m_CameraRot;          // カメラの回転率を代入する
+		bool m_IsADS;				 // カメラがADSか？
 
 public:
 	// コンストラクタ・デストラクタ
@@ -114,6 +115,9 @@ public:
 
 	//カメラの回転率代入
 	void SetCameraRot(VECTOR camerarot) { m_CameraRot = camerarot; }
+
+	//ADS時のカメラの回転率代入＆ADSかどうか？
+	void SetADS(bool _IsADS) { m_IsADS = _IsADS; }
 
 	//現在位置に座標加算
 	void ReflectCollision(VECTOR addVec);

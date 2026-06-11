@@ -39,9 +39,6 @@ public:
 	//デバック用
 	void Draw();
 
-	// カメラのイベント
-	void EventCamera(VECTOR focus);
-
 	// カメラのタイプ切り替え
 	void ChangeCamera(tagCameraID id) { m_id = id; }
 
@@ -50,6 +47,9 @@ public:
 
 	// カメラの座標取得
 	VECTOR PGetCamareRot() { return  m_play.GetCameraRot(); }
+
+	// ADSのカメラ取得
+	bool GetIsADS() { return m_play.GetIsAds(); }
 
 };
 

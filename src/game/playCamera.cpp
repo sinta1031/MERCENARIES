@@ -35,6 +35,7 @@ void PlayCamera::Init() {
 	m_IsTarget2 = false;
 	m_IsFree1 = false;
 	m_IsFree2 = false;
+	m_IsADS = false;
 
 	////ゲーム開始時にプレイヤーの後頭部から始まるようにする
 	//m_CameraPoint = { -0.5f,25.0f,52.5f };
@@ -46,17 +47,17 @@ void PlayCamera::Step(VECTOR _TargetPos, VECTOR _PlayerSpeed) {
 	m_IsTarget1 = false;
 	m_IsTarget2 = false;
 
-	bool IsADS = false;
+	m_IsADS = false;
 
 	if (Input::IsInputRep(KEY_INPUT_LCONTROL) || InputPad::GetLTriggerInputRep())
 	{
-		IsADS = true;
+		m_IsADS = true;
 	}
 
 	//ADSの処理
 	float TargetADS = 0.0f;
 
-	if (IsADS)
+	if (m_IsADS)
 	{
 		TargetADS = 1.0f;
 	}
@@ -78,13 +79,25 @@ void PlayCamera::Step(VECTOR _TargetPos, VECTOR _PlayerSpeed) {
 
 	float len = VSize(diff);
 
-	if (len > DEAD_ZONE)
+	if (m_IsADS)
 	{
-		VECTOR dir = VNorm(diff);
+		m_FocusPos = _TargetPos;
 
-		float over = len - DEAD_ZONE;
+		//ADS時に自由に動けないように
+		m_FocusPos.x += (_TargetPos.x - m_FocusPos.x) * 0.2f;
+		m_FocusPos.y += (_TargetPos.y - m_FocusPos.y) * 0.2f;
+		m_FocusPos.z += (_TargetPos.z - m_FocusPos.z) * 0.2f;
+	}
+	else
+	{
+		if (len > DEAD_ZONE)
+		{
+			VECTOR dir = VNorm(diff);
 
-		m_FocusPos = VAdd(m_FocusPos, VScale(dir, over * 0.25f));
+			float over = len - DEAD_ZONE;
+
+			m_FocusPos = VAdd(m_FocusPos, VScale(dir, over * 0.25f));
+		}
 	}
 
 	m_TargetPoint = m_FocusPos;
@@ -131,7 +144,14 @@ void PlayCamera::Step(VECTOR _TargetPos, VECTOR _PlayerSpeed) {
 	CamRight.z = -sinf(m_CalcRot.y);
 
 	//プレイヤーがカメラ基準でどれだけ移動したか
-	float SideMove = VDot(_PlayerSpeed, CamRight);
+	float SideMove = 0.0f;
+
+	//デットゾーン外なら
+	if (len > DEAD_ZONE && !m_IsADS)
+	{
+		//カメラを動かす
+		SideMove = VDot(_PlayerSpeed, CamRight);
+	}
 	
 	//自動回転量
 	float AutoRot = -SideMove * 0.015f;

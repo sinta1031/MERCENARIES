@@ -183,7 +183,28 @@ void  CPlayer::Step()
 		Temp1 = MMult(Temp2, Temp1);
 		MV1SetMatrix(m_Hndl1, Temp1);*/
 
-		m_vRot.y = atan2f(-m_vSpeed.x, -m_vSpeed.z);
+		//ƒvƒŒƒCƒ„[‚ÌŒü‚«
+		if (m_IsADS)
+		{
+			float RotDiff = m_CameraRot.y - m_vRot.y;
+
+			//-ƒÎ`ƒÎ‚É•â³
+			while (RotDiff > DX_PI_F)
+			{
+				RotDiff -= DX_PI_F * 2.0f;
+			}
+
+			while (RotDiff < -DX_PI_F)
+			{
+				RotDiff += DX_PI_F * 2.0f;
+			}
+
+			m_vRot.y += RotDiff * 0.2f;
+		}
+		else
+		{
+			m_vRot.y = atan2f(-m_vSpeed.x, -m_vSpeed.z);
+		}
 		//=============================================
 	}
 

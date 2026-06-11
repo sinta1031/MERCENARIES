@@ -43,4 +43,7 @@ public:
 	CPlayer& Getplayerinstance();
 
 	void SetCameraRot(VECTOR p_camerarot);
+
+	//ƒJƒƒ‰‚ÌADS‚ğæ“¾‚µ‚Ä‚±‚±‚©‚ç“n‚·
+	void SetADS(bool _IsADS);
 };

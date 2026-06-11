@@ -20,6 +20,7 @@ private:
 	float  m_MoveYam;
 	float  m_ADSRate;		//ADSカメラ
 
+
 	VECTOR m_CameraPoint;
 	VECTOR m_TargetPoint;
 
@@ -28,6 +29,8 @@ private:
 
 	bool m_IsTarget1;
 	bool m_IsTarget2;
+
+	bool m_IsADS;
 
 public:
 	//コンストラクタ
@@ -57,4 +60,6 @@ public:
 
 	bool GetIsTarget1() { return m_IsTarget1; }
 	bool GetIsTarget2() { return m_IsTarget2; }
+
+	bool GetIsAds() { return m_IsADS; }
 };

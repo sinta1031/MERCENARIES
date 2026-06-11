@@ -90,6 +90,7 @@ void CPlayScene::Load()
 void CPlayScene::Step()
 {
 	c_PM.SetCameraRot(c_CM.PGetCamareRot());
+	c_PM.SetADS(c_CM.GetIsADS());
 	c_PM.Step();
 	c_CM.Step(c_PM.Getplayerinstance().GetFramePos(c_PM.Getplayerinstance().GetHndl(), CPlayer::FrameNamber::HEAD),c_PM.Getplayerinstance().GetSpeed());
 	c_F.Step();

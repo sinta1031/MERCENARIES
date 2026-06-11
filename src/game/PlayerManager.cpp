@@ -79,3 +79,9 @@ void CPlayerManager::SetCameraRot(VECTOR p_camerarot)
 {
 	m_play.SetCameraRot(p_camerarot);
 }
+
+//ƒJƒƒ‰‚ÌADS‚ğæ“¾‚µ‚Ä‚±‚±‚©‚ç“n‚·
+void CPlayerManager::SetADS(bool _IsADS)
+{
+	m_play.SetADS(_IsADS);
+}
