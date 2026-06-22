@@ -79,14 +79,18 @@ void PlayCamera::Step(VECTOR _TargetPos, VECTOR _PlayerSpeed) {
 
 	float len = VSize(diff);
 
+	float DeadZoneSize = DEAD_ZONE;
+
 	if (m_IsADS)
 	{
-		m_FocusPos = _TargetPos;
+		//m_FocusPos = _TargetPos;
 
-		//ADSŽž‚ÉŽ©—R‚É“®‚¯‚È‚¢‚æ‚¤‚É
-		m_FocusPos.x += (_TargetPos.x - m_FocusPos.x) * 0.2f;
-		m_FocusPos.y += (_TargetPos.y - m_FocusPos.y) * 0.2f;
-		m_FocusPos.z += (_TargetPos.z - m_FocusPos.z) * 0.2f;
+		////ADSŽž‚ÉŽ©—R‚É“®‚¯‚È‚¢‚æ‚¤‚É
+		//m_FocusPos.x += (_TargetPos.x - m_FocusPos.x) * 0.2f;
+		//m_FocusPos.y += (_TargetPos.y - m_FocusPos.y) * 0.2f;
+		//m_FocusPos.z += (_TargetPos.z - m_FocusPos.z) * 0.2f;
+
+		DeadZoneSize = 2.0f;
 	}
 	else
 	{
@@ -94,7 +98,7 @@ void PlayCamera::Step(VECTOR _TargetPos, VECTOR _PlayerSpeed) {
 		{
 			VECTOR dir = VNorm(diff);
 
-			float over = len - DEAD_ZONE;
+			float over = len - DeadZoneSize;
 
 			m_FocusPos = VAdd(m_FocusPos, VScale(dir, over * 0.25f));
 		}
